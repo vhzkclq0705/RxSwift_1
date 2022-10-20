@@ -11,7 +11,7 @@ import RxSwift
 import SwiftyJSON
 
 class ViewController: UIViewController {
-
+    
     // MARK: - UI
     
     @IBOutlet weak var timerLabel: UILabel!
@@ -53,12 +53,48 @@ class ViewController: UIViewController {
         })
     }
     
-    private func downloadJSON(_ url: String) -> String? {
-        let url = URL(string: url)!
-        let data = try! Data(contentsOf: url)
-        let json = String(data: data, encoding: .utf8)
+    // completion: @escaping (String?) -> Void ... completion(json)
+    // completion: ((String?) -> Void)? ... completion?(json)
+    // 위 두 코드는 같다.
+    
+    /// Escaping closure를 이용한 비동기 API 호출
+    private func downloadJSONWithEscapingClosure(
+        _ url: String,
+        completion: @escaping (String?) -> Void)
+    {
+        DispatchQueue.global().async {
+            let url = URL(string: url)!
+            let data = try! Data(contentsOf: url)
+            let json = String(data: data, encoding: .utf8)
+            
+            DispatchQueue.main.async {
+                completion(json)
+            }
+        }
+    }
+    
+    // MARK: RxSwift
+    
+    // 1. 비동기로 생기는 데이터를 Observable로 감싸서 리턴
+    // 2. Observerble로 오는 데이터를 받아서 처리하는 방법
+    
+    /// RxSwift를 이용한 비동기 API 호출
+    private func downloadJSONWithRxSwift(_ url: String) -> Observable<String?> {
         
-        return json
+        // 1. 비동기로 생기는 데이터를 Observable로 감싸서 리턴
+        return Observable.create { f in
+            DispatchQueue.global().async {
+                let url = URL(string: url)!
+                let data = try! Data(contentsOf: url)
+                let json = String(data: data, encoding: .utf8)
+                
+                DispatchQueue.main.async {
+                    f.onNext(json)
+                }
+            }
+            
+            return Disposables.create()
+        }
     }
     
     // MARK: - Action
@@ -66,17 +102,32 @@ class ViewController: UIViewController {
     @IBAction func didTapLoadButton(_ sender: Any) {
         self.textView.text = ""
         setVisibleWithAnimation(activityIndicator, true)
-        
-        DispatchQueue.global().async {
-            let json = self.downloadJSON(self.listURL)
-            
-            DispatchQueue.main.async {
-                self.textView.text = json
-                
-                self.setVisibleWithAnimation(self.activityIndicator, false)
-            }
-        }
-    }
 
+        // Escaping closure
+//        downloadJSONWithEscapingClosure(self.listURL) { json in
+//            self.textView.text = json
+//            self.setVisibleWithAnimation(self.activityIndicator, false)
+//        }
+
+        // RxSwift
+        // 2. Observerble로 오는 데이터를 받아서 처리하는 방법
+        _ = downloadJSONWithRxSwift(self.listURL)
+            .subscribe { event in
+                // 해당 closure에서 순환 참조가 발생할 수 있다.
+                // closure에서 self.~~~를 호출함으로써 Reference Count가 증가하기 때문이다.
+                // 하지만, .completed, .error 케이스가 실행되면 closure가 닫히면서 Reference Count도 감소한다.
+
+                switch event {
+                case .next(let json):
+                    self.textView.text = json
+                    self.setVisibleWithAnimation(self.activityIndicator, false)
+                case .completed:
+                    break
+                case .error:
+                    break
+                }
+            }
+    }
+    
 }
 
