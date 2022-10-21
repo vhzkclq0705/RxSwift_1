@@ -80,20 +80,31 @@ class ViewController: UIViewController {
     
     /// RxSwift를 이용한 비동기 API 호출
     private func downloadJSONWithRxSwift(_ url: String) -> Observable<String?> {
-        
         // 1. 비동기로 생기는 데이터를 Observable로 감싸서 리턴
-        return Observable.create { f in
-            DispatchQueue.global().async {
-                let url = URL(string: url)!
-                let data = try! Data(contentsOf: url)
-                let json = String(data: data, encoding: .utf8)
-                
-                DispatchQueue.main.async {
-                    f.onNext(json)
+        return Observable.create() { emitter in
+            let url = URL(string: url)!
+            let task = URLSession.shared.dataTask(with: url) { data, _, err in
+                guard err == nil else {
+                    // 에러가 발생하면 .onError를 통해 에러 전달
+                    emitter.onError(err!)
+                    return
                 }
+                
+                // 데이터가 준비가 되면 .onNext를 통해 데이터 전달
+                if let data = data,
+                   let json = String(data: data, encoding: .utf8) {
+                    emitter.onNext(json)
+                }
+                
+                // 데이터가 준비가 되지 않으면 onCompleted를 통해 종료
+                emitter.onCompleted()
             }
             
-            return Disposables.create()
+            task.resume()
+            
+            return Disposables.create() {
+                task.cancel()
+            }
         }
     }
     
@@ -119,8 +130,10 @@ class ViewController: UIViewController {
 
                 switch event {
                 case .next(let json):
-                    self.textView.text = json
-                    self.setVisibleWithAnimation(self.activityIndicator, false)
+                    DispatchQueue.main.async {
+                        self.textView.text = json
+                        self.setVisibleWithAnimation(self.activityIndicator, false)
+                    }
                 case .completed:
                     break
                 case .error:
