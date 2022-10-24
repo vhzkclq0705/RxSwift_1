@@ -7,21 +7,22 @@
 
 import RxSwift
 import RxCocoa
+import RxRelay
 
 class MenuListViewModel {
     
     // MARK: - Property
     
-    var menus = BehaviorSubject<[Menu]>(value: [])
+    // UI 작업은 BehaviorSubject 대신 BehaviorRelay를 사용하는 것이 좋다.
+    // 이유: UI와 연결된 stream이 끊기는 것을 방지해 준다.
+    var menus = BehaviorRelay<[Menu]>(value: [])
     
     lazy var itemsCount = menus.map {
-        $0.map { $0.count }
-            .reduce(0, +)
+        $0.map { $0.count }.reduce(0, +)
     }
     
     lazy var totalPrice = menus.map {
-        $0.map { $0.price * $0.count }
-            .reduce(0, +)
+        $0.map { $0.price * $0.count }.reduce(0, +)
     }
     
     // MARK: - Init
@@ -70,7 +71,7 @@ class MenuListViewModel {
             }
             .take(1)
             .subscribe(onNext: {
-                self.menus.onNext($0)
+                self.menus.accept($0)
             })
     }
     
@@ -83,7 +84,7 @@ class MenuListViewModel {
             }
             .take(1)
             .subscribe(onNext: {
-                self.menus.onNext($0)
+                self.menus.accept($0)
             })
     }
     

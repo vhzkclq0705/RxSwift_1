@@ -34,6 +34,9 @@ class MenuListVC: UIViewController {
     // MARK: - Func
     
     private func configureVC() {
+        // UI 작업은 observe()과 bind() 대신 asDriver()와 drive()를 쓰는 것이 좋다.
+        // 이유: UI에 데이터를 바인딩하는 과정에서 에러가 나면 더이상 동작하지 않는데, 에러처리를 따로 해줄 수 있다.
+        // 또한, drive()는 메인쓰레드에서 작동한다.
         self.viewModel.menus
             .asDriver(onErrorJustReturn: [])
             .drive(self.tableView.rx.items(
