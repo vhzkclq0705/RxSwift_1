@@ -22,6 +22,8 @@ class ViewController: UIViewController {
     // MARK: - Property
     
     private let listURL = "https://my.api.mockaroo.com/members_with_avatar.json?key=44ce18f0"
+    // Disposable 객체들을 담을 수 있는 DisposeBag
+    var disposeBag = DisposeBag()
     
     // MARK: - Life cycle
     
@@ -161,6 +163,7 @@ class ViewController: UIViewController {
                 self.textView.text = json
                 self.setVisibleWithAnimation(self.activityIndicator, false)
             })
+            .disposed(by: self.disposeBag)
         
         // operator를 사용해 글자 수 textView에 전달
 //        _ = downloadJSONWithRxSwift(self.listURL)
