@@ -82,9 +82,9 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="costLabel" destination="vBs-jh-Iiv" id="zg7-DG-Idh"/>
                                             <outlet property="countLabel" destination="xYY-gL-yLc" id="w3M-ln-uLc"/>
                                             <outlet property="nameLabel" destination="Rbq-UT-iEW" id="F4A-p7-vOI"/>
+                                            <outlet property="priceLabel" destination="vBs-jh-Iiv" id="F3M-i9-Bpn"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -105,7 +105,7 @@
                                         </buttonConfiguration>
                                         <connections>
                                             <action selector="didTapOrderButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ct9-sL-x8P"/>
-                                            <segue destination="AI9-n8-3IA" kind="show" id="8jG-Il-Wdc"/>
+                                            <segue destination="AI9-n8-3IA" kind="show" identifier="order" id="8jG-Il-Wdc"/>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your Orders" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FP9-wX-Sz8">
@@ -171,7 +171,7 @@
                     <connections>
                         <outlet property="itemCountLabel" destination="czs-HA-LP6" id="4Kg-dd-R3G"/>
                         <outlet property="tableView" destination="s39-Ib-ghB" id="OkV-61-esW"/>
-                        <outlet property="totalCostLabel" destination="2eo-Cf-NUm" id="N7P-u0-cz1"/>
+                        <outlet property="totalPriceLabel" destination="2eo-Cf-NUm" id="yLN-gK-Fei"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -208,7 +208,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GDZ-ha-MxD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1708.6956521739132" y="81.696428571428569"/>
+            <point key="canvasLocation" x="1712" y="82"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="6v8-Gj-E1v">

@@ -8,6 +8,8 @@
 import Foundation
 
 struct Menu: Decodable {
+    var id: Int
     var name: String
-    var cost: Int
+    var price: Int
+    var count: Int
 }

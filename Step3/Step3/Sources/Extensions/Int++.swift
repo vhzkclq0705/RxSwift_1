@@ -9,11 +9,13 @@ import Foundation
 
 extension Int {
     
-    func convertToString() -> String {
+    func convertToKRW() -> String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         
-        return formatter.string(from: self as NSNumber) ?? ""
+        let str = formatter.string(from: self as NSNumber) ?? ""
+        
+        return "￦" + str
     }
     
 }

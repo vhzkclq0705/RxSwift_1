@@ -8,6 +8,7 @@ target 'Step3' do
   # Pods for Step1
 
   pod 'RxSwift'
-  pod 'SwiftyJSON'
+  pod 'RxCocoa'
+  pod 'RxViewController'
 
 end
