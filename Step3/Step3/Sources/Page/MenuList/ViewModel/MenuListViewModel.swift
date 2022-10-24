@@ -6,6 +6,7 @@
 //
 
 import RxSwift
+import RxCocoa
 
 class MenuListViewModel {
     
@@ -26,14 +27,24 @@ class MenuListViewModel {
     // MARK: - Init
     
     init() {
-        let menus: [Menu] = [
-            Menu(id: 0, name: "1", price: 100, count: 0),
-            Menu(id: 1, name: "2", price: 200, count: 0),
-            Menu(id: 2, name: "3", price: 300, count: 0),
-            Menu(id: 3, name: "4", price: 400, count: 0),
-        ]
-        
-        self.menus.onNext(menus)
+        _ = APIService.fetchAllMenusRx()
+            .map { data -> [MenuItem] in
+                guard let response = try? JSONDecoder().decode(Response.self, from: data) else {
+                    return []
+                }
+                
+                return response.menus
+            }
+            .map { menuItems -> [Menu] in
+                var menus: [Menu] = []
+                menuItems.enumerated().forEach { index, item in
+                    let menu = Menu.fromMenuItems(id: index, item: item)
+                    menus.append(menu)
+                }
+                return menus
+            }
+            .take(1)
+            .bind(to: self.menus)
     }
     
     // MARK: - Func
@@ -47,7 +58,7 @@ class MenuListViewModel {
                             id: $0.id,
                             name: $0.name,
                             price: $0.price,
-                            count: $0.count + num)
+                            count: max($0.count + num, 0))
                     } else {
                         return Menu(
                             id: $0.id,
@@ -74,5 +85,9 @@ class MenuListViewModel {
             .subscribe(onNext: {
                 self.menus.onNext($0)
             })
+    }
+    
+    func onOrder() {
+        
     }
 }

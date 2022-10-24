@@ -34,11 +34,6 @@ class MenuListVC: UIViewController {
     // MARK: - Func
     
     private func configureVC() {
-        configureViewModel()
-        
-    }
-    
-    private func configureViewModel() {
         self.viewModel.menus
             .observe(on: MainScheduler.asyncInstance)
             .bind(to: self.tableView.rx.items(
@@ -53,7 +48,7 @@ class MenuListVC: UIViewController {
                 .disposed(by: self.disposeBag)
         
         self.viewModel.itemsCount
-            .map { "\($0)" }
+            .map { "\($0) Items" }
             .observe(on: MainScheduler.asyncInstance)
             .bind(to: self.itemCountLabel.rx.text)
             .disposed(by: self.disposeBag)
@@ -65,22 +60,22 @@ class MenuListVC: UIViewController {
             .disposed(by: self.disposeBag)
     }
     
-    // MARK: - Action
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if segue.identifier == "order" {
+//           guard let vc = segue.destination as? OrderListVC else {
+//               return
+//           }
+//        }
+//    }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "order" {
-           guard let vc = segue.destination as? OrderListVC else {
-               return
-           }
-        }
-    }
+    // MARK: - Action
     
     @IBAction func didTapClearButton(_ sender: Any) {
         self.viewModel.clearAllItemSelections()
     }
     
     @IBAction func didTapOrderButton(_ sender: Any) {
-        
+        self.viewModel.onOrder()
     }
 
 }

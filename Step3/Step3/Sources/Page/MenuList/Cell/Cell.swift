@@ -31,11 +31,11 @@ class Cell: UITableViewCell {
     // MARK: - Action
     
     @IBAction func didTapPlusButton(_ sender: Any) {
-        countChange?(1)
+        self.countChange?(1)
     }
     
     @IBAction func didTapMinusButton(_ sender: Any) {
-        countChange?(-1)
+        self.countChange?(-1)
     }
     
     
