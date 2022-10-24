@@ -35,8 +35,8 @@ class MenuListVC: UIViewController {
     
     private func configureVC() {
         self.viewModel.menus
-            .observe(on: MainScheduler.asyncInstance)
-            .bind(to: self.tableView.rx.items(
+            .asDriver(onErrorJustReturn: [])
+            .drive(self.tableView.rx.items(
                 cellIdentifier: "Cell",
                 cellType: Cell.self)) { index, item, cell in
                     cell.updateCell(item)
@@ -49,14 +49,14 @@ class MenuListVC: UIViewController {
         
         self.viewModel.itemsCount
             .map { "\($0) Items" }
-            .observe(on: MainScheduler.asyncInstance)
-            .bind(to: self.itemCountLabel.rx.text)
+            .asDriver(onErrorJustReturn: "")
+            .drive(self.itemCountLabel.rx.text)
             .disposed(by: self.disposeBag)
         
         self.viewModel.totalPrice
             .map { $0.convertToKRW() }
-            .observe(on: MainScheduler.asyncInstance)
-            .bind(to: self.totalPriceLabel.rx.text)
+            .asDriver(onErrorJustReturn: "")
+            .drive(self.totalPriceLabel.rx.text)
             .disposed(by: self.disposeBag)
     }
     
