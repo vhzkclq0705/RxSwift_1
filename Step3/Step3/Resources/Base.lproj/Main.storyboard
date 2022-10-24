@@ -11,7 +11,7 @@
         <!--Menu-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Step3" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="MenuListVC" customModule="Step3" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -105,6 +105,7 @@
                                         </buttonConfiguration>
                                         <connections>
                                             <action selector="didTapOrderButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ct9-sL-x8P"/>
+                                            <segue destination="AI9-n8-3IA" kind="show" id="8jG-Il-Wdc"/>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your Orders" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FP9-wX-Sz8">
@@ -166,7 +167,7 @@
                             <constraint firstItem="NeW-ql-Udy" firstAttribute="top" secondItem="s39-Ib-ghB" secondAttribute="bottom" id="zm0-rd-XBV"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Menu" id="i2o-el-Fbm"/>
+                    <navigationItem key="navigationItem" title="Menu" largeTitleDisplayMode="never" id="i2o-el-Fbm"/>
                     <connections>
                         <outlet property="itemCountLabel" destination="czs-HA-LP6" id="4Kg-dd-R3G"/>
                         <outlet property="tableView" destination="s39-Ib-ghB" id="OkV-61-esW"/>
@@ -177,17 +178,51 @@
             </objects>
             <point key="canvasLocation" x="944.92753623188412" y="81.696428571428569"/>
         </scene>
+        <!--Receipt-->
+        <scene sceneID="s4a-xQ-gTl">
+            <objects>
+                <viewController id="AI9-n8-3IA" customClass="OrderListVC" customModule="Step3" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="n0m-cX-zAo">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ms2-ql-bhZ">
+                                <rect key="frame" x="0.0" y="140" width="414" height="756"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <color key="textColor" systemColor="labelColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="42"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="M1J-oA-NMm"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="ms2-ql-bhZ" secondAttribute="bottom" id="33E-Ga-DbB"/>
+                            <constraint firstItem="ms2-ql-bhZ" firstAttribute="leading" secondItem="M1J-oA-NMm" secondAttribute="leading" id="7iC-gc-2hk"/>
+                            <constraint firstItem="ms2-ql-bhZ" firstAttribute="trailing" secondItem="M1J-oA-NMm" secondAttribute="trailing" id="ZpV-TH-y6h"/>
+                            <constraint firstItem="ms2-ql-bhZ" firstAttribute="top" secondItem="M1J-oA-NMm" secondAttribute="top" id="sp1-rf-kud"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Receipt" largeTitleDisplayMode="always" id="mrX-oQ-tzN"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GDZ-ha-MxD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1708.6956521739132" y="81.696428571428569"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="6v8-Gj-E1v">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="e1f-uv-7cc" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="SB9-3y-2qu">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="SB9-3y-2qu">
+                        <rect key="frame" x="0.0" y="44" width="414" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <textAttributes key="titleTextAttributes">
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="40"/>
                         </textAttributes>
+                        <navigationBarAppearance key="standardAppearance"/>
+                        <navigationBarAppearance key="scrollEdgeAppearance"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -200,6 +235,9 @@
         </scene>
     </scenes>
     <resources>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

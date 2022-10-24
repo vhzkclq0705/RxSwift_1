@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MenuListVC.swift
 //  Step3
 //
 //  Created by 권오준 on 2022/10/24.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class MenuListVC: UIViewController {
 
     // MARK: - UI
     
@@ -22,6 +22,7 @@ class ViewController: UIViewController {
             if self.itemCount < 0 {
                 self.itemCount = 0
             }
+            
             self.itemCountLabel.text = "\(self.itemCount) Items"
         }
         willSet {
@@ -35,11 +36,7 @@ class ViewController: UIViewController {
                 self.totalCost = 0
             }
             
-            let formatter = NumberFormatter()
-            formatter.numberStyle = .decimal
-            let cost = formatter.string(from: self.totalCost as NSNumber)
-            
-            self.totalCostLabel.text = cost
+            self.totalCostLabel.text = self.totalCost.convertToString()
         }
         willSet {
             self.totalCost += newValue
@@ -80,7 +77,7 @@ class ViewController: UIViewController {
 
 // MARK: - TableView delegate & dataSource
 
-extension ViewController: UITableViewDelegate,
+extension MenuListVC: UITableViewDelegate,
                           UITableViewDataSource {
     
     func tableView(
