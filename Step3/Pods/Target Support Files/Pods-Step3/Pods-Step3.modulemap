@@ -1,0 +1,6 @@
+framework module Pods_Step3 {
+  umbrella header "Pods-Step3-umbrella.h"
+
+  export *
+  module * { export * }
+}
