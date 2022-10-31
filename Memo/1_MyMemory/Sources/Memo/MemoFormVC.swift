@@ -7,6 +7,8 @@
 
 import UIKit
 
+import RxSwift
+
 class MemoFormVC: UIViewController {
 
     // MARK: - UI
@@ -15,6 +17,7 @@ class MemoFormVC: UIViewController {
     @IBOutlet weak var preview: UIImageView!
     
     // MARK: - Property
+    
     
     var lastId: Int?
     var subject: String!

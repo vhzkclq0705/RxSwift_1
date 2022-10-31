@@ -156,7 +156,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="tableVIew" destination="ZlG-aG-QRd" id="kPR-Cr-uVi"/>
+                        <outlet property="tableView" destination="ZlG-aG-QRd" id="eMf-gh-Gfc"/>
                         <segue destination="4YL-9F-Zvy" kind="show" id="kwX-By-ex2"/>
                     </connections>
                 </viewController>

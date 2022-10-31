@@ -19,6 +19,7 @@
 		768DDAD1289ED7D900049381 /* MemoData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 768DDAD0289ED7D900049381 /* MemoData.swift */; };
 		768DDAD4289EE67800049381 /* Date++Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 768DDAD3289EE67800049381 /* Date++Extensions.swift */; };
 		769F39F92908F241007BB769 /* MemoListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769F39F82908F241007BB769 /* MemoListVC.swift */; };
+		769F39FB2908F93D007BB769 /* MemoListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769F39FA2908F93D007BB769 /* MemoListViewModel.swift */; };
 		F3DC863DC6603B28A3B07B56 /* Pods_1_MyMemory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 669C7A4E9FA37C00042FA00C /* Pods_1_MyMemory.framework */; };
 /* End PBXBuildFile section */
 
@@ -38,6 +39,7 @@
 		768DDAD0289ED7D900049381 /* MemoData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoData.swift; sourceTree = "<group>"; };
 		768DDAD3289EE67800049381 /* Date++Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date++Extensions.swift"; sourceTree = "<group>"; };
 		769F39F82908F241007BB769 /* MemoListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoListVC.swift; sourceTree = "<group>"; };
+		769F39FA2908F93D007BB769 /* MemoListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoListViewModel.swift; sourceTree = "<group>"; };
 		BA643718C94C7D44DCBFF1DF /* Pods-1_MyMemory.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-1_MyMemory.release.xcconfig"; path = "Target Support Files/Pods-1_MyMemory/Pods-1_MyMemory.release.xcconfig"; sourceTree = "<group>"; };
 		FA69EEB547E081D53697F1E7 /* Pods-1_MyMemory.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-1_MyMemory.debug.xcconfig"; path = "Target Support Files/Pods-1_MyMemory/Pods-1_MyMemory.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -128,6 +130,7 @@
 				769F39F82908F241007BB769 /* MemoListVC.swift */,
 				768DDAC8289ED73B00049381 /* MemoFormVC.swift */,
 				768DDACA289ED74400049381 /* MemoReadVC.swift */,
+				769F39FA2908F93D007BB769 /* MemoListViewModel.swift */,
 			);
 			path = Memo;
 			sourceTree = "<group>";
@@ -278,6 +281,7 @@
 				768DDAC9289ED73B00049381 /* MemoFormVC.swift in Sources */,
 				768DDACB289ED74400049381 /* MemoReadVC.swift in Sources */,
 				769F39F92908F241007BB769 /* MemoListVC.swift in Sources */,
+				769F39FB2908F93D007BB769 /* MemoListViewModel.swift in Sources */,
 				768DDAD4289EE67800049381 /* Date++Extensions.swift in Sources */,
 				768DDAAE289ECCC700049381 /* AppDelegate.swift in Sources */,
 				768DDAB0289ECCC700049381 /* SceneDelegate.swift in Sources */,
