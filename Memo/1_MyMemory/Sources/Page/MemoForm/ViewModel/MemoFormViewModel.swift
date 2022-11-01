@@ -38,7 +38,7 @@ class MemoFormViewModel {
         bind()
     }
     
-    // MARK: - Func
+    // MARK: - Bind
     
     func bind() {
         input.cameraButtonDidTapEvent
@@ -50,7 +50,12 @@ class MemoFormViewModel {
             .disposed(by: disposeBag)
     }
     
-    func save(memo: MemoData) {
+    // MARK: - Func
+    
+    func saveMemo(title: String?, contents: String?, img: Data?, date: Date?) {
+        let image = img == nil ? nil : UIImage(data: img!)
+        let memo = MemoData(title: title, contents: contents, image: image, regdate: date)
+        
         output.memo.onNext(memo)
         output.memo.onCompleted()
     }

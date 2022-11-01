@@ -49,6 +49,7 @@ class MemoFormVC: UIViewController {
         contents.rx.text
             .orEmpty
             .distinctUntilChanged()
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] in
                 self?.textDidChanged($0)
             })
@@ -89,53 +90,14 @@ class MemoFormVC: UIViewController {
     
     func saveMemo() {
         guard self.contents.text?.isEmpty == false else {
-            let alert = UIAlertController(
-                title: nil,
-                message: "내용을 입력해주세요.",
-                preferredStyle: .alert)
-            
-            alert.addAction(UIAlertAction(title: "OK", style: .default))
-            
-            self.present(alert, animated: true)
+            presentAlert()
             return
         }
         
-        let memo = MemoData(
-            memoIdx: 0,
-            title: subject,
-            contents: contents.text,
-            image: preview.image,
-            regdate: Date())
+        let contents = self.contents.text
+        let img = preview.image?.pngData()
         
-        viewModel.save(memo: memo)
-        
-        self.navigationController?.popViewController(animated: true)
-    }
-    
-    
-    // MARK: - Action
-    
-    @IBAction func save(_ sender: Any) {
-        guard self.contents.text?.isEmpty == false else {
-            let alert = UIAlertController(
-                title: nil,
-                message: "내용을 입력해주세요.",
-                preferredStyle: .alert)
-            
-            alert.addAction(UIAlertAction(title: "OK", style: .default))
-            
-            self.present(alert, animated: true)
-            return
-        }
-        
-        let data = MemoData(
-            memoIdx: 0,
-            title: subject,
-            contents: contents.text,
-            image: preview.image,
-            regdate: Date())
-        
-        //        saveHandler?(data)
+        viewModel.saveMemo(title: subject, contents: contents, img: img, date: Date())
         
         self.navigationController?.popViewController(animated: true)
     }
@@ -156,20 +118,6 @@ extension MemoFormVC: UIImagePickerControllerDelegate {
     }
     
 }
-
-// MARK: - TextViewDelegate
-
-//extension MemoFormVC: UITextViewDelegate {
-//
-//    func textViewDidChange(_ textView: UITextView) {
-//        let contents = textView.text as NSString
-//        let length = (contents.length > 15) ? 15 : contents.length
-//
-//        self.subject = contents.substring(with: NSRange(location: 0, length: length))
-//        self.title = self.subject
-//    }
-//
-//}
 
 // MARK: - NavigationControllerDelegate
 

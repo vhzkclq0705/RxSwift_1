@@ -35,10 +35,8 @@ class MemoListVC: UIViewController {
         if segue.identifier == "create",
            let vc = segue.destination as? MemoFormVC {
             vc.viewModel.output.memo
-                .subscribe(onNext: { [unowned self] in
-                    var list = self.viewModel.output.memoList.value
-                    list.append($0)
-                    self.viewModel.output.memoList.accept(list)
+                .subscribe(onNext: { [weak self] in
+                    self?.viewModel.addMemo(memo: $0)
                 })
                 .disposed(by: disposeBag)
         }
