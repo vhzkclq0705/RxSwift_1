@@ -20,24 +20,29 @@ class MemoReadVC: UIViewController {
     
     // MARK: - Property
     
-    var param: MemoData?
+    var viewModel: MemoReadViewModel?
+    var disposeBag = DisposeBag()
     
     // MARK: - Life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureViewController()
-    }
-    
-    // MARK: - Setup
-    
-    func configureViewController() {
-        self.subject.text = param?.title
-        self.contents.text = param?.contents
-        self.img.image = param?.image
         
-        self.title = param?.regdate!.formatToString(true)
+        configureBindings()
     }
-
+    
+    // MARK: - Configure
+    
+    func configureBindings() {
+        viewModel?.output.memo
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] in
+                self?.subject.text = $0.title
+                self?.contents.text = $0.contents
+                self?.img.image = $0.image
+                self?.title = $0.regdate!.formatToString(true)
+            })
+            .disposed(by: disposeBag)
+    }
 
 }

@@ -83,14 +83,11 @@ class MemoListVC: UIViewController {
                     withIdentifier: "MemoReadVC") as? MemoReadVC else {
                     return
                 }
-                vc.param = memo
+                vc.viewModel = MemoReadViewModel(memo)
                 
                 self?.navigationController?.pushViewController(vc, animated: true)
             })
             .disposed(by: disposeBag)
     }
-    
-    // MARK: - Func
-    
 
 }
