@@ -7,6 +7,8 @@
 
 import UIKit
 
+import RxSwift
+
 class MemoCell: UITableViewCell {
 
     // MARK: - UI
@@ -15,16 +17,34 @@ class MemoCell: UITableViewCell {
     @IBOutlet weak var contents: UILabel!
     @IBOutlet weak var regdate: UILabel!
     @IBOutlet weak var img: UIImageView!
-
-    // MARK: - Func
     
-    func updateCell(_ data: MemoData) {
-        if data.image != nil {
-            self.img.image = data.image
-        }
-        self.subject.text = data.title
-        self.contents.text = data.contents
-        self.regdate.text = data.regdate!.formatToString(false)
+    // MARK: - Property
+    
+    let memo = PublishSubject<MemoData>()
+    var disposeBag = DisposeBag()
+    
+    // MARK: - Init
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        
+        memo
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] in
+                if $0.image != nil {
+                    self?.img.image = $0.image
+                }
+                self?.subject.text = $0.title
+                self?.contents.text = $0.contents
+                self?.regdate.text = $0.regdate?.formatToString(false)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        disposeBag = DisposeBag()
     }
 
 }

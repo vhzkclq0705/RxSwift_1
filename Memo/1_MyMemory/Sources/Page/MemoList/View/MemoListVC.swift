@@ -62,7 +62,8 @@ class MemoListVC: UIViewController {
                     for: IndexPath(row: row, section: 0)) as? MemoCell else {
                     return UITableViewCell()
                 }
-                cell.updateCell(item)
+                
+                cell.memo.onNext(item)
             
                 return cell
             }
