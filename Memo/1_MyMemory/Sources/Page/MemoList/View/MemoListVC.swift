@@ -19,7 +19,6 @@ class MemoListVC: UIViewController {
     
     // MARK: - Property
     
-//    let memoList = BehaviorRelay<[MemoData]>(value: [])
     let viewModel = MemoListViewModel()
     var disposeBag = DisposeBag()
     
@@ -35,15 +34,17 @@ class MemoListVC: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "create",
            let vc = segue.destination as? MemoFormVC {
-//            vc.saveHandler = { memo in
-//                var memoList = self.memoList.value
-//                memoList.append(memo)
-//                self.memoList.accept(memoList)
-//            }
+            vc.viewModel.output.memo
+                .subscribe(onNext: { [unowned self] in
+                    var list = self.viewModel.output.memoList.value
+                    list.append($0)
+                    self.viewModel.output.memoList.accept(list)
+                })
+                .disposed(by: disposeBag)
         }
     }
 
-    // MARK: - Func
+    // MARK: - Configure
     
     func configureBindings() {
         // Input
@@ -89,6 +90,8 @@ class MemoListVC: UIViewController {
             })
             .disposed(by: disposeBag)
     }
-                
+    
+    // MARK: - Func
+    
 
 }
