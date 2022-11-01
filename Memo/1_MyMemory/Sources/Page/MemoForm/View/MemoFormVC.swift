@@ -18,22 +18,27 @@ class MemoFormVC: UIViewController {
     
     // MARK: - Property
     
-    
-    var lastId: Int?
+    let viewModel = MemoFormViewModel()
     var subject: String!
-    var saveHandler: ((MemoData) -> Void)?
+//    var lastId: Int?
+//    var saveHandler: ((MemoData) -> Void)?
     
     // MARK: - Life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         configureViewController()
     }
     
-    // MARK: - Setup
+    // MARK: - Func
     
     func configureViewController() {
-        self.contents.delegate = self
+//        self.contents.delegate = self
+    }
+    
+    func configureBindings() {
+        // Input
     }
 
     
@@ -59,7 +64,7 @@ class MemoFormVC: UIViewController {
             image: preview.image,
             regdate: Date())
         
-        saveHandler?(data)
+//        saveHandler?(data)
         
         self.navigationController?.popViewController(animated: true)
     }
@@ -92,17 +97,17 @@ extension MemoFormVC: UIImagePickerControllerDelegate {
 
 // MARK: - TextViewDelegate
 
-extension MemoFormVC: UITextViewDelegate {
-    
-    func textViewDidChange(_ textView: UITextView) {
-        let contents = textView.text as NSString
-        let length = (contents.length > 15) ? 15 : contents.length
-        
-        self.subject = contents.substring(with: NSRange(location: 0, length: length))
-        self.title = self.subject
-    }
-    
-}
+//extension MemoFormVC: UITextViewDelegate {
+//
+//    func textViewDidChange(_ textView: UITextView) {
+//        let contents = textView.text as NSString
+//        let length = (contents.length > 15) ? 15 : contents.length
+//
+//        self.subject = contents.substring(with: NSRange(location: 0, length: length))
+//        self.title = self.subject
+//    }
+//
+//}
 
 // MARK: - NavigationControllerDelegate
 

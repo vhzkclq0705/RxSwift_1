@@ -7,6 +7,9 @@
 
 import UIKit
 
+import RxSwift
+import RxCocoa
+
 class MemoReadVC: UIViewController {
 
     // MARK: - UI

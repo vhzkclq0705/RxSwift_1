@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		760B5739290FCD5300E1863B /* MemoFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760B5738290FCD5300E1863B /* MemoFormViewModel.swift */; };
 		768DDAAE289ECCC700049381 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 768DDAAD289ECCC700049381 /* AppDelegate.swift */; };
 		768DDAB0289ECCC700049381 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 768DDAAF289ECCC700049381 /* SceneDelegate.swift */; };
 		768DDAB5289ECCC700049381 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 768DDAB3289ECCC700049381 /* Main.storyboard */; };
@@ -25,6 +26,7 @@
 
 /* Begin PBXFileReference section */
 		669C7A4E9FA37C00042FA00C /* Pods_1_MyMemory.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_1_MyMemory.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		760B5738290FCD5300E1863B /* MemoFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoFormViewModel.swift; sourceTree = "<group>"; };
 		768DDAAA289ECCC700049381 /* 1_MyMemory.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 1_MyMemory.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		768DDAAD289ECCC700049381 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		768DDAAF289ECCC700049381 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -98,7 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				768DDAD7289EE69000049381 /* Model */,
-				768DDAD6289EE68500049381 /* Memo */,
+				768DDAD6289EE68500049381 /* Page */,
 				768DDAD5289EE67F00049381 /* Extensions */,
 				768DDAAD289ECCC700049381 /* AppDelegate.swift */,
 				768DDAAF289ECCC700049381 /* SceneDelegate.swift */,
@@ -123,16 +125,14 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		768DDAD6289EE68500049381 /* Memo */ = {
+		768DDAD6289EE68500049381 /* Page */ = {
 			isa = PBXGroup;
 			children = (
-				768DDACE289ED7A400049381 /* MemoCell.swift */,
-				769F39F82908F241007BB769 /* MemoListVC.swift */,
-				768DDAC8289ED73B00049381 /* MemoFormVC.swift */,
-				768DDACA289ED74400049381 /* MemoReadVC.swift */,
-				769F39FA2908F93D007BB769 /* MemoListViewModel.swift */,
+				76E6D4E4290FBF1600FEAE74 /* MemoRead */,
+				76E6D4E3290FBEFF00FEAE74 /* MemoForm */,
+				76E6D4E2290FBEF900FEAE74 /* MemoList */,
 			);
-			path = Memo;
+			path = Page;
 			sourceTree = "<group>";
 		};
 		768DDAD7289EE69000049381 /* Model */ = {
@@ -141,6 +141,81 @@
 				768DDAD0289ED7D900049381 /* MemoData.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		76E6D4E2290FBEF900FEAE74 /* MemoList */ = {
+			isa = PBXGroup;
+			children = (
+				76E6D4E8290FBF5400FEAE74 /* View */,
+				76E6D4E7290FBF4900FEAE74 /* ViewModel */,
+			);
+			path = MemoList;
+			sourceTree = "<group>";
+		};
+		76E6D4E3290FBEFF00FEAE74 /* MemoForm */ = {
+			isa = PBXGroup;
+			children = (
+				76E6D4EA290FBF6500FEAE74 /* View */,
+				76E6D4E9290FBF5F00FEAE74 /* ViewModel */,
+			);
+			path = MemoForm;
+			sourceTree = "<group>";
+		};
+		76E6D4E4290FBF1600FEAE74 /* MemoRead */ = {
+			isa = PBXGroup;
+			children = (
+				76E6D4E6290FBF2500FEAE74 /* ViewModel */,
+				76E6D4E5290FBF1C00FEAE74 /* View */,
+			);
+			path = MemoRead;
+			sourceTree = "<group>";
+		};
+		76E6D4E5290FBF1C00FEAE74 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				768DDACA289ED74400049381 /* MemoReadVC.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		76E6D4E6290FBF2500FEAE74 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		76E6D4E7290FBF4900FEAE74 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				769F39FA2908F93D007BB769 /* MemoListViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		76E6D4E8290FBF5400FEAE74 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				768DDACE289ED7A400049381 /* MemoCell.swift */,
+				769F39F82908F241007BB769 /* MemoListVC.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		76E6D4E9290FBF5F00FEAE74 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				760B5738290FCD5300E1863B /* MemoFormViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		76E6D4EA290FBF6500FEAE74 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				768DDAC8289ED73B00049381 /* MemoFormVC.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		B9B114C1F34AC78AC705E87D /* Frameworks */ = {
@@ -278,6 +353,7 @@
 				768DDACF289ED7A400049381 /* MemoCell.swift in Sources */,
 				768DDAD1289ED7D900049381 /* MemoData.swift in Sources */,
 				768DDAB8289ECCC700049381 /* __MyMemory.xcdatamodeld in Sources */,
+				760B5739290FCD5300E1863B /* MemoFormViewModel.swift in Sources */,
 				768DDAC9289ED73B00049381 /* MemoFormVC.swift in Sources */,
 				768DDACB289ED74400049381 /* MemoReadVC.swift in Sources */,
 				769F39F92908F241007BB769 /* MemoListVC.swift in Sources */,
