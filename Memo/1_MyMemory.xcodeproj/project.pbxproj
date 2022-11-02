@@ -115,7 +115,7 @@
 			children = (
 				760B573E291109EA00E1863B /* ViewModelType */,
 				768DDAD7289EE69000049381 /* Model */,
-				768DDAD6289EE68500049381 /* Page */,
+				768DDAD6289EE68500049381 /* Presentation */,
 				768DDAD5289EE67F00049381 /* Extensions */,
 				768DDAAD289ECCC700049381 /* AppDelegate.swift */,
 				768DDAAF289ECCC700049381 /* SceneDelegate.swift */,
@@ -141,14 +141,14 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		768DDAD6289EE68500049381 /* Page */ = {
+		768DDAD6289EE68500049381 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
 				76E6D4E4290FBF1600FEAE74 /* MemoRead */,
 				76E6D4E3290FBEFF00FEAE74 /* MemoForm */,
 				76E6D4E2290FBEF900FEAE74 /* MemoList */,
 			);
-			path = Page;
+			path = Presentation;
 			sourceTree = "<group>";
 		};
 		768DDAD7289EE69000049381 /* Model */ = {
