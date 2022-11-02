@@ -8,57 +8,44 @@
 import Foundation
 
 import RxSwift
-import RxRelay
+import RxCocoa
 
-class MemoListViewModel {
+protocol MemoListViewModelType: ViewModelType {
+    
+}
+
+class MemoListViewModel: MemoListViewModelType {
     
     // MARK: - Input
     
     struct Input {
-        let createButtonDidTapEvent = PublishSubject<Void>()
+        let createButtonDidTapEvent: Observable<Void>
     }
     
     // MARK: - Output
     
     struct Output {
-        let memoList = BehaviorRelay<[MemoData]>(value: [])
-        let showMemoFormVC = PublishSubject<Void>()
+        let memoList: BehaviorRelay<[MemoData]>
+        let showMemoFormVC: PublishSubject<Void>
     }
     
     // MARK: - Property
     
-    let input = Input()
-    let output = Output()
-    let disposeBag = DisposeBag()
-    
-    // MARK: - Init
-    
-    init() {
-        bind()
-    }
+    var disposeBag = DisposeBag()
     
     // MARK: - Bind
     
-    func bind() {
-        input.createButtonDidTapEvent
-            .bind(to: output.showMemoFormVC)
-            .disposed(by: disposeBag)
-    }
-    
-    // MARK: - Func
-    
-    func addMemo(memo: MemoData) {
-        var memoList = output.memoList.value
-        let lastIdx = memoList.last?.memoIdx ?? -1
-        let memo = MemoData(
-            memoIdx: lastIdx + 1,
-            title: memo.title,
-            contents: memo.contents,
-            image: memo.image,
-            regdate: memo.regdate)
+    func transform(input: Input) -> Output {
+        let memoList = BehaviorRelay<[MemoData]>(value: [MemoData(memoIdx: 0, title: "zz", contents: "ss", regdate: Date())])
+        let showMemoFormVC = PublishSubject<Void>()
         
-        memoList.append(memo)
-        output.memoList.accept(memoList)
+        input.createButtonDidTapEvent
+            .bind(to: showMemoFormVC)
+            .disposed(by: disposeBag)
+        
+        return Output(
+            memoList: memoList,
+            showMemoFormVC: showMemoFormVC)
     }
     
 }

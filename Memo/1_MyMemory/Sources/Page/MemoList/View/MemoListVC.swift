@@ -35,8 +35,8 @@ class MemoListVC: UIViewController {
         if segue.identifier == "create",
            let vc = segue.destination as? MemoFormVC {
             vc.viewModel.output.memo
-                .subscribe(onNext: { [weak self] in
-                    self?.viewModel.addMemo(memo: $0)
+                .subscribe(onNext: { [weak self] _ in
+//                    self?.viewModel.addMemo(memo: $0)
                 })
                 .disposed(by: disposeBag)
         }
@@ -45,15 +45,13 @@ class MemoListVC: UIViewController {
     // MARK: - Configure
     
     func configureBindings() {
-        // Input
         
-        createButton.rx.tap
-            .bind(to: viewModel.input.createButtonDidTapEvent)
-            .disposed(by: disposeBag)
+        let input = MemoListViewModel.Input(
+            createButtonDidTapEvent: createButton.rx.tap.asObservable())
         
-        // Output
+        let output = viewModel.transform(input: input)
         
-        viewModel.output.memoList
+        output.memoList
             .asDriver(onErrorJustReturn: [])
             .drive(tableView.rx.items) { tableView, row, item -> UITableViewCell in
                 let id = item.image != nil ? "memoCellWithImage" : "memoCell"
@@ -64,16 +62,17 @@ class MemoListVC: UIViewController {
                 }
                 
                 cell.memo.onNext(item)
-            
+                
                 return cell
             }
             .disposed(by: disposeBag)
         
-        viewModel.output.showMemoFormVC
+        output.showMemoFormVC
             .subscribe(onNext: { [weak self] in
                 self?.performSegue(withIdentifier: "create", sender: nil)
             })
             .disposed(by: disposeBag)
+        
     }
     
     func configureTableViewDelegate() {
