@@ -31,8 +31,8 @@ class MemoCell: UITableViewCell {
         memo
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] in
-                if $0.image != nil {
-                    self?.img.image = $0.image
+                if $0.imageData != nil {
+                    self?.img.image = UIImage(data: $0.imageData!)
                 }
                 self?.subject.text = $0.title
                 self?.contents.text = $0.contents

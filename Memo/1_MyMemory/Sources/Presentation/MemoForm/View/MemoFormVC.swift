@@ -95,9 +95,9 @@ class MemoFormVC: UIViewController {
         }
         
         let contents = self.contents.text
-        let img = preview.image?.pngData()
+        let imgData = preview.image?.pngData()
         
-        viewModel.saveMemo(title: subject, contents: contents, img: img, date: Date())
+        viewModel.saveMemo(title: subject, contents: contents, imgData: imgData, date: Date())
         
         self.navigationController?.popViewController(animated: true)
     }

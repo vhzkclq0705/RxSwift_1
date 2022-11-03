@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 
 class MemoListVC: UIViewController {
-
+    
     // MARK: - UI
     
     @IBOutlet weak var tableView: UITableView!
@@ -27,7 +27,7 @@ class MemoListVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configureBindings()
+        bindViewModel()
         configureTableViewDelegate()
     }
     
@@ -36,15 +36,15 @@ class MemoListVC: UIViewController {
            let vc = segue.destination as? MemoFormVC {
             vc.viewModel.output.memo
                 .subscribe(onNext: { [weak self] _ in
-//                    self?.viewModel.addMemo(memo: $0)
+                    //                    self?.viewModel.addMemo(memo: $0)
                 })
                 .disposed(by: disposeBag)
         }
     }
-
-    // MARK: - Configure
     
-    func configureBindings() {
+    // MARK: - Bind
+    
+    func bindViewModel() {
         
         let input = MemoListViewModel.Input(
             createButtonDidTapEvent: createButton.rx.tap.asObservable())
@@ -53,8 +53,8 @@ class MemoListVC: UIViewController {
         
         output.memoList
             .asDriver(onErrorJustReturn: [])
-            .drive(tableView.rx.items) { tableView, row, item -> UITableViewCell in
-                let id = item.image != nil ? "memoCellWithImage" : "memoCell"
+            .drive(tableView.rx.items) { tableView, row, item in
+                let id = item.imageData != nil ? "memoCellWithImage" : "memoCell"
                 guard let cell = tableView.dequeueReusableCell(
                     withIdentifier: id,
                     for: IndexPath(row: row, section: 0)) as? MemoCell else {
@@ -62,6 +62,7 @@ class MemoListVC: UIViewController {
                 }
                 
                 cell.memo.onNext(item)
+                
                 
                 return cell
             }
@@ -88,5 +89,5 @@ class MemoListVC: UIViewController {
             })
             .disposed(by: disposeBag)
     }
-
+    
 }

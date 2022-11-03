@@ -52,9 +52,8 @@ class MemoFormViewModel {
     
     // MARK: - Func
     
-    func saveMemo(title: String?, contents: String?, img: Data?, date: Date?) {
-        let image = img == nil ? nil : UIImage(data: img!)
-        let memo = MemoData(title: title, contents: contents, image: image, regdate: date)
+    func saveMemo(title: String?, contents: String?, imgData: Data?, date: Date?) {
+        let memo = MemoData(title: title, contents: contents, imageData: imgData, regdate: date)
         
         output.memo.onNext(memo)
         output.memo.onCompleted()
