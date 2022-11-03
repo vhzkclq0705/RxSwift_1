@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 
 protocol MemoListViewModelType: ViewModelType {
-    
+    var storage: MemoStorageType { get }
 }
 
 class MemoListViewModel: MemoListViewModelType {
@@ -31,12 +31,20 @@ class MemoListViewModel: MemoListViewModelType {
     
     // MARK: - Property
     
+    var storage: MemoStorageType
     var disposeBag = DisposeBag()
+    
+    // MARK: - Init
+    
+    init() {
+        self.storage = Storage.shared
+        storage.load()
+    }
     
     // MARK: - Bind
     
     func transform(input: Input) -> Output {
-        let memoList = BehaviorRelay<[MemoData]>(value: [MemoData(memoIdx: 0, title: "zz", contents: "ss", regdate: Date())])
+        let memoList = storage.getMemoList()
         let showMemoFormVC = PublishSubject<Void>()
         
         input.createButtonDidTapEvent

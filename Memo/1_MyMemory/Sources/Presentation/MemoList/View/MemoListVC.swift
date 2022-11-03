@@ -34,11 +34,7 @@ class MemoListVC: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "create",
            let vc = segue.destination as? MemoFormVC {
-            vc.viewModel.output.memo
-                .subscribe(onNext: { [weak self] _ in
-                    //                    self?.viewModel.addMemo(memo: $0)
-                })
-                .disposed(by: disposeBag)
+            
         }
     }
     
