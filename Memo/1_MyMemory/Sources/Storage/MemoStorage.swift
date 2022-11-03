@@ -12,9 +12,11 @@ import RxCocoa
 
 protocol MemoStorageType {
     func getMemoList() -> BehaviorRelay<[MemoData]>
-    func create(title: String?, contents: String?, imgData: Data?, regDate: Date)
-    func update(memo: MemoData)
+    func create(title: String, contents: String?, imgData: Data?)
+    func update(memo: MemoData, title: String, contents: String?, imgData: Data?)
     func delete(memo: MemoData)
+    func save()
+    func load()
 }
 
 class Storage: MemoStorageType {
@@ -37,25 +39,31 @@ class Storage: MemoStorageType {
         return memoList
     }
     
-    func create(title: String?, contents: String?, imgData: Data?, regDate: Date) {
+    func create(title: String, contents: String?, imgData: Data?) {
         let memo = MemoData(
             title: title,
             contents: contents,
-            imageData: imgData,
-            regdate: regDate)
+            imageData: imgData)
         
         list.append(memo)
+        save()
         
         memoList.accept(list)
     }
     
-    func update(memo: MemoData, title: String?, contents: String?, imgData: Data?) {
-        let updatedMemo = MemoData()
+    func update(memo: MemoData, title: String, contents: String?, imgData: Data?) {
+        let updatedMemo = MemoData(
+            original: memo,
+            title: title,
+            contents: contents,
+            imageData: imgData)
         
         if let index = list.firstIndex(where: { $0 == memo }) {
             list.remove(at: index)
             list.insert(updatedMemo, at: index)
         }
+        
+        save()
         
         memoList.accept(list)
     }
@@ -64,6 +72,24 @@ class Storage: MemoStorageType {
         if let index = list.firstIndex(where: { $0 == memo }) {
             list.remove(at: index)
         }
+        
+        save()
+        
+        memoList.accept(list)
+    }
+    
+    func save() {
+        UserDefaults.standard.set(
+            try? PropertyListEncoder().encode(list),
+            forKey: "MemoList")
+    }
+    
+    func load() {
+        guard let data = UserDefaults.standard.data(forKey: "MemoList") else {
+            return
+        }
+        
+        list = (try? PropertyListDecoder().decode([MemoData].self, from: data)) ?? []
         
         memoList.accept(list)
     }

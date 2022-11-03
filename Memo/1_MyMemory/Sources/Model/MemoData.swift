@@ -7,13 +7,42 @@
 
 import UIKit
 
-struct MemoData: Equatable {
-    var title: String?
+struct MemoData: Codable, Equatable {
+    var title: String
     var contents: String?
     var imageData: Data?
-    var regdate: Date?
-}
-
-extension MemoData {
+    var regdate: Date
+    var isUpdated: Bool
     
+    // 메모 생성용
+    init(
+        title: String,
+        contents: String?,
+        imageData: Data?,
+        regdate: Date = Date(),
+        isUpdated: Bool = false)
+    {
+        self.title = title
+        self.contents = contents
+        self.imageData = imageData
+        self.regdate = regdate
+        self.isUpdated = isUpdated
+    }
+    
+    // 메모 업데이트용
+    init(
+        original: MemoData,
+        title: String,
+        contents: String?,
+        imageData: Data?,
+        regdate: Date = Date(),
+        isUpdated: Bool = true)
+    {
+        self = original
+        self.title = title
+        self.contents = contents
+        self.imageData = imageData
+        self.regdate = regdate
+        self.isUpdated = isUpdated
+    }
 }
