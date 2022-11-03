@@ -36,7 +36,7 @@ class MemoCell: UITableViewCell {
                 }
                 self?.subject.text = $0.title
                 self?.contents.text = $0.contents
-                self?.regdate.text = $0.regdate?.formatToString(false)
+                self?.regdate.text = $0.regdate.formatToString(false)
             })
             .disposed(by: disposeBag)
     }

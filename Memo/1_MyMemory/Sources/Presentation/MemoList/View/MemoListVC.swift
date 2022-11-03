@@ -59,7 +59,6 @@ class MemoListVC: UIViewController {
                 
                 cell.memo.onNext(item)
                 
-                
                 return cell
             }
             .disposed(by: disposeBag)
