@@ -9,54 +9,77 @@ import Foundation
 
 import RxSwift
 
-class MemoFormViewModel {
+protocol MemoFormViewModelType: ViewModelType {
+    var storage: MemoStorageType { get }
+}
+
+class MemoFormViewModel: MemoFormViewModelType {
     
     // MARK: - Input
     
     struct Input {
-        let cameraButtonDidTapEvent = PublishSubject<Void>()
-        let saveButtonDidTapEvent = PublishSubject<Void>()
+        let cameraButtonDidTapEvent: Observable<Void>
+        let saveButtonDidTapEvent: Observable<(String, String?, Data?)>
     }
     
     // MARK: - Output
     
     struct Output {
-        let memo = PublishSubject<MemoData>()
-        let showImagePicker = PublishSubject<Void>()
-        let saveMemoAndPop = PublishSubject<Void>()
+        let showImagePicker: PublishSubject<Void>
+        let saveMemoAndPop: PublishSubject<Void>
     }
     
     // MARK: - Property
-    
-    let input = Input()
-    let output = Output()
-    let disposeBag = DisposeBag()
+
+    var storage: MemoStorageType
+    var disposeBag = DisposeBag()
     
     // MARK: - Init
     
     init() {
-        bind()
+        self.storage = Storage.shared
     }
     
     // MARK: - Bind
     
     func bind() {
+//        input.cameraButtonDidTapEvent
+//            .bind(to: output.showImagePicker)
+//            .disposed(by: disposeBag)
+//
+//        input.saveButtonDidTapEvent
+//            .bind(to: output.saveMemoAndPop)
+//            .disposed(by: disposeBag)
+    }
+    
+    func transform(input: Input) -> Output {
+        let showImagePicker = PublishSubject<Void>()
+        let saveMemoAndPop = PublishSubject<Void>()
+        
         input.cameraButtonDidTapEvent
-            .bind(to: output.showImagePicker)
+            .bind(to: showImagePicker)
             .disposed(by: disposeBag)
         
         input.saveButtonDidTapEvent
-            .bind(to: output.saveMemoAndPop)
+            .do(onNext: { [weak self] title, contents, imgData in
+                self?.storage.create(title: title, contents: contents, imgData: imgData)
+            })
+            .map { _ in () }
+            .bind(to: saveMemoAndPop)
             .disposed(by: disposeBag)
+        
+        return Output(
+            showImagePicker: showImagePicker,
+            saveMemoAndPop: saveMemoAndPop)
     }
     
     // MARK: - Func
     
-    func saveMemo(title: String?, contents: String?, imgData: Data?, date: Date?) {
-        let memo = MemoData(title: title, contents: contents, imageData: imgData, regdate: date)
-        
-        output.memo.onNext(memo)
-        output.memo.onCompleted()
-    }
+//    func saveMemo(title: String?, contents: String?, imgData: Data?, date: Date?) {
+//        let memo = MemoData(title: title, contents: contents, imageData: imgData, regdate: date)
+//
+//        output.memo.onNext(memo)
+//        output.memo.onCompleted()
+//    }
     
 }
