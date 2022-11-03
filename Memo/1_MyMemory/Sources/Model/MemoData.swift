@@ -7,10 +7,13 @@
 
 import UIKit
 
-struct MemoData {
-    var memoIdx: Int?
+struct MemoData: Equatable {
     var title: String?
     var contents: String?
-    var image: UIImage?
+    var imageData: Data?
     var regdate: Date?
+}
+
+extension MemoData {
+    
 }
