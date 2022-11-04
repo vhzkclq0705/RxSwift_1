@@ -230,7 +230,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="31D-eP-nIZ">
-                                <rect key="frame" x="16" y="112" width="382" height="250"/>
+                                <rect key="frame" x="16" y="146" width="382" height="250"/>
                                 <color key="backgroundColor" systemColor="systemGray5Color"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="250" id="gK2-bn-TJG"/>
@@ -240,20 +240,29 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" keyboardAppearance="alert"/>
                             </textView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Xgx-Fw-AMS">
-                                <rect key="frame" x="16" y="377" width="250" height="250"/>
+                                <rect key="frame" x="16" y="411" width="250" height="250"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="250" id="7AV-Qg-xlD"/>
                                     <constraint firstAttribute="height" constant="250" id="kYb-Sy-cod"/>
                                 </constraints>
                             </imageView>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="제목" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wkL-1g-IVw">
+                                <rect key="frame" x="16" y="102" width="382" height="34"/>
+                                <color key="backgroundColor" systemColor="systemGray5Color"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Kxq-TW-Xk0"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="31D-eP-nIZ" firstAttribute="top" secondItem="Kxq-TW-Xk0" secondAttribute="top" constant="20" id="WeG-RQ-QZ0"/>
+                            <constraint firstItem="wkL-1g-IVw" firstAttribute="leading" secondItem="Kxq-TW-Xk0" secondAttribute="leading" constant="16" id="AHj-qG-nQq"/>
+                            <constraint firstItem="31D-eP-nIZ" firstAttribute="top" secondItem="wkL-1g-IVw" secondAttribute="bottom" constant="10" id="T74-4H-weN"/>
+                            <constraint firstItem="wkL-1g-IVw" firstAttribute="top" secondItem="Kxq-TW-Xk0" secondAttribute="top" constant="10" id="ThW-oP-PM3"/>
                             <constraint firstItem="31D-eP-nIZ" firstAttribute="leading" secondItem="Kxq-TW-Xk0" secondAttribute="leading" constant="16" id="XxD-Fa-2Yl"/>
                             <constraint firstItem="Kxq-TW-Xk0" firstAttribute="trailing" secondItem="31D-eP-nIZ" secondAttribute="trailing" constant="16" id="YD4-92-glk"/>
                             <constraint firstItem="Xgx-Fw-AMS" firstAttribute="top" secondItem="31D-eP-nIZ" secondAttribute="bottom" constant="15" id="aOu-9Y-NnV"/>
+                            <constraint firstItem="Kxq-TW-Xk0" firstAttribute="trailing" secondItem="wkL-1g-IVw" secondAttribute="trailing" constant="16" id="jsf-V5-Ugq"/>
                             <constraint firstItem="Xgx-Fw-AMS" firstAttribute="leading" secondItem="Kxq-TW-Xk0" secondAttribute="leading" constant="16" id="lk5-T5-Qol"/>
                         </constraints>
                     </view>
@@ -265,14 +274,15 @@
                     </navigationItem>
                     <connections>
                         <outlet property="cameraButton" destination="pRm-G3-8K8" id="0CN-Tf-ii5"/>
-                        <outlet property="contents" destination="31D-eP-nIZ" id="PIj-sP-fnf"/>
+                        <outlet property="contentsTextView" destination="31D-eP-nIZ" id="kgc-G4-d8L"/>
                         <outlet property="preview" destination="Xgx-Fw-AMS" id="Uwh-sv-5VQ"/>
                         <outlet property="saveButton" destination="Fb2-en-ame" id="WVR-Qd-tbc"/>
+                        <outlet property="titleTextField" destination="wkL-1g-IVw" id="Hil-d0-b4s"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="h4Q-Q3-OIj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="578" y="767"/>
+            <point key="canvasLocation" x="576.81159420289862" y="766.74107142857144"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="j7h-eV-6Gw">

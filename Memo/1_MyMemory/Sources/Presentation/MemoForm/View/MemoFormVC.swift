@@ -14,7 +14,9 @@ class MemoFormVC: UIViewController {
     
     // MARK: - UI
     
-    @IBOutlet weak var contents: UITextView!
+    
+    @IBOutlet weak var titleTextField: UITextField!
+    @IBOutlet weak var contentsTextView: UITextView!
     @IBOutlet weak var preview: UIImageView!
     @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBOutlet weak var cameraButton: UIBarButtonItem!
@@ -23,51 +25,38 @@ class MemoFormVC: UIViewController {
     
     let viewModel = MemoFormViewModel()
     var disposeBag = DisposeBag()
-    var subject: String!
     
     // MARK: - Life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configureBindings()
+        bindViewModel()
     }
     
-    // MARK: - Configure
+    // MARK: - Bind
     
-    func configureBindings() {
-        // Input
+    func bindViewModel() {
+        let input = MemoFormViewModel.Input(
+            cameraButtonDidTapEvent: cameraButton.rx.tap.asObservable(),
+            saveButtonDidTapEvent: saveButton.rx.tap.asObservable(),
+            title: titleTextField.rx.text.orEmpty.asObservable(),
+            contents: contentsTextView.rx.text.asObservable())
         
-        cameraButton.rx.tap
-            .bind(to: viewModel.input.cameraButtonDidTapEvent)
-            .disposed(by: disposeBag)
+        let output = viewModel.transform(input: input)
         
-        saveButton.rx.tap
-            .bind(to: viewModel.input.saveButtonDidTapEvent)
-            .disposed(by: disposeBag)
-        
-        contents.rx.text
-            .orEmpty
-            .distinctUntilChanged()
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] in
-                self?.textDidChanged($0)
-            })
-            .disposed(by: disposeBag)
-        
-        // Output
-        
-        viewModel.output.showImagePicker
+        output.showImagePicker
             .subscribe(onNext: { [weak self] in
                 self?.pickImage()
             })
             .disposed(by: disposeBag)
         
-        viewModel.output.saveMemoAndPop
+        output.saveMemoAndPop
             .subscribe(onNext: { [weak self] in
-                self?.saveMemo()
+                self?.navigationController?.popViewController(animated: true)
             })
             .disposed(by: disposeBag)
+        
     }
     
     // MARK: - Func
@@ -80,28 +69,6 @@ class MemoFormVC: UIViewController {
         self.present(picker, animated: false)
     }
     
-    func textDidChanged(_ string: ControlProperty<String>.Element) {
-        let text = string as NSString
-        let length = (text.length > 15) ? 15 : text.length
-        
-        self.subject = text.substring(with: NSRange(location: 0, length: length))
-        self.title = self.subject
-    }
-    
-    func saveMemo() {
-        guard self.contents.text?.isEmpty == false else {
-            presentAlert()
-            return
-        }
-        
-        let contents = self.contents.text
-        let imgData = preview.image?.pngData()
-        
-        viewModel.saveMemo(title: subject, contents: contents, imgData: imgData, date: Date())
-        
-        self.navigationController?.popViewController(animated: true)
-    }
-    
 }
 
 // MARK: - ImagePickerControllerDelegate
@@ -112,7 +79,11 @@ extension MemoFormVC: UIImagePickerControllerDelegate {
         _ picker: UIImagePickerController,
         didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any])
     {
-        self.preview.image = info[.editedImage] as? UIImage
+        viewModel.setImage((info[.editedImage] as? UIImage)?.pngData())
+            .subscribe(onNext: { [weak self] in
+                self?.preview.image = UIImage(data: $0!)
+            })
+            .disposed(by: disposeBag)
         
         picker.dismiss(animated: true)
     }
