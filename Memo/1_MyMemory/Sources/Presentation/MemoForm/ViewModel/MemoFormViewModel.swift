@@ -8,6 +8,7 @@
 import UIKit
 
 import RxSwift
+import RxRelay
 
 protocol MemoFormViewModelType: ViewModelType {
     var storage: MemoStorageType { get }
@@ -29,8 +30,9 @@ class MemoFormViewModel: MemoFormViewModelType {
     struct Output {
         let showImagePicker: PublishSubject<Void>
         let saveMemoAndPop: PublishSubject<Void>
-        let title: PublishSubject<String>
-        let contents: PublishSubject<String?>
+        let showAlert: PublishSubject<Void>
+        let title: PublishRelay<String>
+        let contents: PublishRelay<String?>
     }
     
     // MARK: - Property
@@ -55,20 +57,21 @@ class MemoFormViewModel: MemoFormViewModelType {
     func transform(input: Input) -> Output {
         let showImagePicker = PublishSubject<Void>()
         let saveMemoAndPop = PublishSubject<Void>()
-        let title = PublishSubject<String>()
-        let contents = PublishSubject<String?>()
+        let showAlert = PublishSubject<Void>()
+        let title = PublishRelay<String>()
+        let contents = PublishRelay<String?>()
         
         input.cameraButtonDidTapEvent
             .bind(to: showImagePicker)
             .disposed(by: disposeBag)
         
         input.saveButtonDidTapEvent
-            .do(onNext: { [weak self] in
-                self?.saveMemo()
+            .bind(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.title == "" ? showAlert.onNext(()) : saveMemoAndPop.onNext(())
             })
-            .bind(to: saveMemoAndPop)
             .disposed(by: disposeBag)
-        
+                
         input.title
             .filter { $0.count <= 15 }
             .do(onNext: { [weak self] in
@@ -83,10 +86,11 @@ class MemoFormViewModel: MemoFormViewModelType {
             })
             .bind(to: contents)
             .disposed(by: disposeBag)
-        
+                
         return Output(
             showImagePicker: showImagePicker,
             saveMemoAndPop: saveMemoAndPop,
+            showAlert: showAlert,
             title: title,
             contents: contents)
     }
@@ -99,7 +103,7 @@ class MemoFormViewModel: MemoFormViewModelType {
         return Observable.just(imgData)
     }
     
-    private func saveMemo() {
+    func saveMemo() {
         storage.create(title: title, contents: contents, imgData: imgData)
     }
 

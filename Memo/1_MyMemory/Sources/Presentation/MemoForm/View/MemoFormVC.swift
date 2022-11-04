@@ -53,10 +53,28 @@ class MemoFormVC: UIViewController {
         
         output.saveMemoAndPop
             .subscribe(onNext: { [weak self] in
+                self?.viewModel.saveMemo()
                 self?.navigationController?.popViewController(animated: true)
             })
             .disposed(by: disposeBag)
         
+        output.showAlert
+            .subscribe(onNext: { [weak self] in
+                self?.presentAlert()
+            })
+            .disposed(by: disposeBag)
+        
+        output.title
+            .asDriver(onErrorJustReturn: "")
+            .drive(onNext: { [weak self] in
+                self?.title = $0
+            })
+            .disposed(by: disposeBag)
+        
+        output.contents
+            .asDriver(onErrorJustReturn: nil)
+            .drive(contentsTextView.rx.text)
+            .disposed(by: disposeBag)
     }
     
     // MARK: - Func
