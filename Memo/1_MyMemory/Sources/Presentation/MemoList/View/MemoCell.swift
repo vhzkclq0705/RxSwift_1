@@ -40,11 +40,5 @@ class MemoCell: UITableViewCell {
             })
             .disposed(by: disposeBag)
     }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        
-        disposeBag = DisposeBag()
-    }
 
 }

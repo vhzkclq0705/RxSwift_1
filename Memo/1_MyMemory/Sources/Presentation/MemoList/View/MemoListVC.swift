@@ -31,13 +31,6 @@ class MemoListVC: UIViewController {
         configureTableViewDelegate()
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "create",
-           let vc = segue.destination as? MemoFormVC {
-            
-        }
-    }
-    
     // MARK: - Bind
     
     func bindViewModel() {
