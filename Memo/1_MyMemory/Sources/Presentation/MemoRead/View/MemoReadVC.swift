@@ -14,9 +14,11 @@ class MemoReadVC: UIViewController {
 
     // MARK: - UI
     
-    @IBOutlet weak var subject: UILabel!
-    @IBOutlet weak var contents: UILabel!
-    @IBOutlet weak var img: UIImageView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var contentsLabel: UILabel!
+    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var updateButton: UIBarButtonItem!
+    @IBOutlet weak var deleteButton: UIBarButtonItem!
     
     // MARK: - Property
     

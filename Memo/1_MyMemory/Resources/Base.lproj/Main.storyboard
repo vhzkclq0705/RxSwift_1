@@ -151,6 +151,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="목록" id="VP8-W5-9ZM">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="9fc-jG-OU5">
+                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
                                 <segue destination="JME-xE-Jpv" kind="show" identifier="create" id="eI9-wk-BbY"/>
                             </connections>
@@ -210,11 +211,22 @@
                             <constraint firstItem="cLT-tB-Ade" firstAttribute="top" secondItem="yGQ-8N-GcS" secondAttribute="bottom" constant="20" id="wXO-AQ-2FH"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Title" id="l18-pO-P5s"/>
+                    <navigationItem key="navigationItem" title="Title" id="l18-pO-P5s">
+                        <rightBarButtonItems>
+                            <barButtonItem image="trash" catalog="system" id="YUT-E8-E1n">
+                                <color key="tintColor" systemColor="systemRedColor"/>
+                            </barButtonItem>
+                            <barButtonItem image="square.and.pencil" catalog="system" id="OB3-16-Vhh">
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </barButtonItem>
+                        </rightBarButtonItems>
+                    </navigationItem>
                     <connections>
-                        <outlet property="contents" destination="yGQ-8N-GcS" id="xqX-ef-ajr"/>
-                        <outlet property="img" destination="cLT-tB-Ade" id="S27-uW-lkf"/>
-                        <outlet property="subject" destination="XIb-jT-bjn" id="LQ2-GI-SeF"/>
+                        <outlet property="contentsLabel" destination="yGQ-8N-GcS" id="XGi-eu-FHn"/>
+                        <outlet property="deleteButton" destination="YUT-E8-E1n" id="9Aw-0K-vJk"/>
+                        <outlet property="imageView" destination="cLT-tB-Ade" id="azI-5n-rpJ"/>
+                        <outlet property="titleLabel" destination="XIb-jT-bjn" id="R8v-Xz-ZsA"/>
+                        <outlet property="updateButton" destination="OB3-16-Vhh" id="1hy-eb-X8B"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uHw-d9-bjq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -302,6 +314,8 @@
         </scene>
     </scenes>
     <resources>
+        <image name="square.and.pencil" catalog="system" width="128" height="113"/>
+        <image name="trash" catalog="system" width="117" height="128"/>
         <systemColor name="labelColor">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
@@ -310,6 +324,9 @@
         </systemColor>
         <systemColor name="systemGray5Color">
             <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
