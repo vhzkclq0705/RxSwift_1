@@ -26,7 +26,7 @@ class MemoListViewModel: MemoListViewModelType {
     
     struct Output {
         let memoList: BehaviorRelay<[MemoData]>
-        let showMemoFormVC: PublishSubject<Void>
+        let showMemoFormVC: Observable<Void>
     }
     
     // MARK: - Property
@@ -45,11 +45,7 @@ class MemoListViewModel: MemoListViewModelType {
     
     func transform(input: Input) -> Output {
         let memoList = storage.getMemoList()
-        let showMemoFormVC = PublishSubject<Void>()
-        
-        input.createButtonDidTapEvent
-            .bind(to: showMemoFormVC)
-            .disposed(by: disposeBag)
+        let showMemoFormVC = input.createButtonDidTapEvent
         
         return Output(
             memoList: memoList,
