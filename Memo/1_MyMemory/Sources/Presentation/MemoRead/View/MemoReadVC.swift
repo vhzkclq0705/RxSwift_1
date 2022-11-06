@@ -61,50 +61,55 @@ class MemoReadVC: UIViewController {
         let output = viewModel.transform(input: input)
         
         output.title
-            .bind(to: titleTextField.rx.text)
+            .emit(to: titleTextField.rx.text)
             .disposed(by: disposeBag)
         
         output.contents
-            .bind(to: contentsTextView.rx.text)
+            .emit(to: contentsTextView.rx.text)
+            .disposed(by: disposeBag)
+        
+        output.titleLength
+            .observe(on: MainScheduler.asyncInstance)
+            .subscribe(onNext: { [weak self] in
+                if $0 {
+                    self?.titleTextField.deleteBackward()
+                }
+            })
             .disposed(by: disposeBag)
         
         output.date
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] in
+            .emit(onNext: { [weak self] in
                 self?.title = $0
             })
             .disposed(by: disposeBag)
         
         output.imgData
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] in
+            .emit(onNext: { [weak self] in
                 self?.imageView.image = UIImage(data: $0 ?? Data())
             })
             .disposed(by: disposeBag)
         
         output.update
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] in
+            .emit(onNext: { [weak self] in
                 self?.isUpdate(true)
             })
             .disposed(by: disposeBag)
         
         output.complete
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] in
+            .emit(onNext: { [weak self] in
                 self?.isUpdate(false)
                 self?.viewModel.updateMemo()
             })
             .disposed(by: disposeBag)
         
         output.delete
-            .subscribe(onNext: { [weak self] in
+            .emit(onNext: { [weak self] in
                 self?.presentAlert()
             })
             .disposed(by: disposeBag)
         
         output.camera
-            .subscribe(onNext: { [weak self] in
+            .emit(onNext: { [weak self] in
                 self?.pickImage()
             })
             .disposed(by: disposeBag)

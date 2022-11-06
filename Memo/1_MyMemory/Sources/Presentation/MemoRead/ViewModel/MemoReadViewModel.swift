@@ -8,9 +8,15 @@
 import Foundation
 
 import RxSwift
+import RxCocoa
 
 protocol MemoReadViewModelType: ViewModelType {
     var storage: MemoStorageType { get }
+    var memo: Observable<MemoData> { get set }
+    var original: MemoData! { get set }
+    var title: String { get set }
+    var contents: String? { get set }
+    var imgData: Data? { get set }
 }
 
 class MemoReadViewModel: MemoReadViewModelType {
@@ -29,25 +35,26 @@ class MemoReadViewModel: MemoReadViewModelType {
     // MARK: - Ouput
     
     struct Output {
-        let title: Observable<String>
-        let contents: Observable<String?>
-        let date: Observable<String>
-        let imgData: Observable<Data?>
-        let update: Observable<Void>
-        let complete: Observable<Void>
-        let delete: Observable<Void>
-        let camera: Observable<Void>
+        let title: Signal<String>
+        let titleLength: Observable<Bool>
+        let contents: Signal<String?>
+        let date: Signal<String>
+        let imgData: Signal<Data?>
+        let update: Signal<Void>
+        let complete: Signal<Void>
+        let delete: Signal<Void>
+        let camera: Signal<Void>
     }
     
     // MARK: - Property
     
     var storage: MemoStorageType
     var disposeBag = DisposeBag()
-    private var memo: Observable<MemoData>
-    private var original: MemoData!
-    private var title: String
-    private var contents: String?
-    private var imgData: Data?
+    var memo: Observable<MemoData>
+    var original: MemoData!
+    var title: String
+    var contents: String?
+    var imgData: Data?
     
     // MARK: - Init
     
@@ -63,12 +70,14 @@ class MemoReadViewModel: MemoReadViewModelType {
     // MARK: - Bind
     
     func transform(input: Input) -> Output {
+        let inputTitle = input.title.share()
+        
         memo.subscribe(onNext: {
             self.original = $0
         })
         .disposed(by: disposeBag)
         
-        input.title
+        inputTitle
             .subscribe(onNext: { [weak self] in
                 self?.title = $0
             })
@@ -80,28 +89,40 @@ class MemoReadViewModel: MemoReadViewModelType {
             })
             .disposed(by: disposeBag)
         
+        let titleLength = inputTitle
+            .map { $0.count > 15 }
+        
         let title = memo
             .map { $0.title }
+            .asSignal(onErrorJustReturn: "")
  
         let contents = memo
             .map { $0.contents }
+            .asSignal(onErrorJustReturn: nil)
         
         let imgData = memo
             .map { $0.imageData }
+            .asSignal(onErrorJustReturn: nil)
         
         let date = memo
             .map { $0.regdate.formatToString(true) }
+            .asSignal(onErrorJustReturn: Date().formatToString(true))
         
         let update = input.updateButtonDidTapEvent
+            .asSignal(onErrorJustReturn: ())
                 
         let complete = input.completeButtonDidTapEvent
+            .asSignal(onErrorJustReturn: ())
         
         let deleteAlert = input.deleteButtonDidTapEvent
+            .asSignal(onErrorJustReturn: ())
         
         let camera = input.cameraButtonDidTapEvent
+            .asSignal(onErrorJustReturn: ())
         
         return Output(
             title: title,
+            titleLength: titleLength,
             contents: contents,
             date: date,
             imgData: imgData,
