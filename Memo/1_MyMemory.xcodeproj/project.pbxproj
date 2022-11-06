@@ -191,8 +191,8 @@
 		76E6D4E4290FBF1600FEAE74 /* MemoRead */ = {
 			isa = PBXGroup;
 			children = (
-				76E6D4E6290FBF2500FEAE74 /* ViewModel */,
 				76E6D4E5290FBF1C00FEAE74 /* View */,
+				76E6D4E6290FBF2500FEAE74 /* ViewModel */,
 			);
 			path = MemoRead;
 			sourceTree = "<group>";
