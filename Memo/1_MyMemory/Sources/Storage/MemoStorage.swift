@@ -19,7 +19,7 @@ protocol MemoStorageType {
     func load()
 }
 
-class Storage: MemoStorageType {
+final class Storage: MemoStorageType {
     
     // MARK: - Property
     
@@ -69,7 +69,7 @@ class Storage: MemoStorageType {
     }
     
     func delete(memo: MemoData) {
-        if let index = list.firstIndex(where: { $0 == memo }) {
+        if let index = list.firstIndex(where: { $0.identifier == memo.identifier }) {
             list.remove(at: index)
         }
         
@@ -81,11 +81,11 @@ class Storage: MemoStorageType {
     func save() {
         UserDefaults.standard.set(
             try? PropertyListEncoder().encode(list),
-            forKey: "MemoList")
+            forKey: "Memo")
     }
     
     func load() {
-        guard let data = UserDefaults.standard.data(forKey: "MemoList") else {
+        guard let data = UserDefaults.standard.data(forKey: "Memo") else {
             return
         }
         

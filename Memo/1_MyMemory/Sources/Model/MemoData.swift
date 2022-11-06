@@ -12,6 +12,7 @@ struct MemoData: Codable, Equatable {
     var contents: String?
     var imageData: Data?
     var regdate: Date
+    var identifier: Int
     
     // 메모 생성용
     init(
@@ -24,6 +25,7 @@ struct MemoData: Codable, Equatable {
         self.contents = contents
         self.imageData = imageData
         self.regdate = regdate
+        self.identifier = Int(Date().timeIntervalSince1970)
     }
     
     // 메모 업데이트용
@@ -39,5 +41,6 @@ struct MemoData: Codable, Equatable {
         self.contents = contents
         self.imageData = imageData
         self.regdate = regdate
+        self.identifier = original.identifier
     }
 }
