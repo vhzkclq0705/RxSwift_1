@@ -12,21 +12,18 @@ struct MemoData: Codable, Equatable {
     var contents: String?
     var imageData: Data?
     var regdate: Date
-    var isUpdated: Bool
     
     // 메모 생성용
     init(
         title: String,
         contents: String?,
         imageData: Data?,
-        regdate: Date = Date(),
-        isUpdated: Bool = false)
+        regdate: Date = Date())
     {
         self.title = title
         self.contents = contents
         self.imageData = imageData
         self.regdate = regdate
-        self.isUpdated = isUpdated
     }
     
     // 메모 업데이트용
@@ -35,14 +32,12 @@ struct MemoData: Codable, Equatable {
         title: String,
         contents: String?,
         imageData: Data?,
-        regdate: Date = Date(),
-        isUpdated: Bool = true)
+        regdate: Date = Date())
     {
         self = original
         self.title = title
         self.contents = contents
         self.imageData = imageData
         self.regdate = regdate
-        self.isUpdated = isUpdated
     }
 }
