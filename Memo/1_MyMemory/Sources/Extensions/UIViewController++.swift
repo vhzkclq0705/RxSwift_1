@@ -12,13 +12,12 @@ extension UIViewController {
     func presentAlert() {
         let alert = UIAlertController(
             title: nil,
-            message: "내용을 입력해주세요.",
+            message: "제목을 입력해주세요.",
             preferredStyle: .alert)
         
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         
         self.present(alert, animated: true)
     }
-
     
 }
