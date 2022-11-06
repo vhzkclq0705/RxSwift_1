@@ -31,7 +31,6 @@ class MemoFormVC: UIViewController {
         super.viewDidLoad()
         
         bindViewModel()
-        configureTextField()
     }
     
     // MARK: - Bind
@@ -81,16 +80,6 @@ class MemoFormVC: UIViewController {
     }
     
     // MARK: - Func
-    
-    func configureTextField() {
-//        titleTextField.rx.text
-//            .orEmpty
-//            .observe(on: MainScheduler.instance)
-//            .subscribe(onNext: { [weak self] in
-//
-//            })
-//            .disposed(by: disposeBag)
-    }
     
     func pickImage() {
         let picker = UIImagePickerController()
