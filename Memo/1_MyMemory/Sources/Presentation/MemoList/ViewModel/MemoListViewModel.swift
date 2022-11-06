@@ -26,7 +26,7 @@ class MemoListViewModel: MemoListViewModelType {
     
     struct Output {
         let memoList: BehaviorRelay<[MemoData]>
-        let showMemoFormVC: Observable<Void>
+        let showMemoFormVC: Signal<Void>
     }
     
     // MARK: - Property
@@ -45,7 +45,9 @@ class MemoListViewModel: MemoListViewModelType {
     
     func transform(input: Input) -> Output {
         let memoList = storage.getMemoList()
+        
         let showMemoFormVC = input.createButtonDidTapEvent
+            .asSignal(onErrorJustReturn: ())
         
         return Output(
             memoList: memoList,

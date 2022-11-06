@@ -57,7 +57,7 @@ class MemoListVC: UIViewController {
             .disposed(by: disposeBag)
         
         output.showMemoFormVC
-            .subscribe(onNext: { [weak self] in
+            .emit(onNext: { [weak self] in
                 self?.performSegue(withIdentifier: "create", sender: nil)
             })
             .disposed(by: disposeBag)
