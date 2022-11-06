@@ -39,47 +39,49 @@ class MemoFormVC: UIViewController {
         let input = MemoFormViewModel.Input(
             cameraButtonDidTapEvent: cameraButton.rx.tap.asObservable(),
             saveButtonDidTapEvent: saveButton.rx.tap.asObservable(),
-            title: titleTextField.rx.text.orEmpty.asObservable(),
+            title: titleTextField.rx.text.orEmpty.distinctUntilChanged().asObservable(),
             contents: contentsTextView.rx.text.asObservable())
         
         let output = viewModel.transform(input: input)
         
-        output.showImagePicker
-            .subscribe(onNext: { [weak self] in
-                self?.pickImage()
-            })
-            .disposed(by: disposeBag)
-        
-        output.saveMemoAndPop
-            .subscribe(onNext: { [weak self] in
-                self?.viewModel.saveMemo()
-                self?.navigationController?.popViewController(animated: true)
-            })
-            .disposed(by: disposeBag)
-        
-        output.showAlert
-            .subscribe(onNext: { [weak self] in
-                self?.presentAlert()
-            })
-            .disposed(by: disposeBag)
-        
         output.title
+            .emit(onNext: { [weak self] in
+                self?.title = $0
+            })
+            .disposed(by: disposeBag)
+        
+        output.titleLength
             .observe(on: MainScheduler.asyncInstance)
             .subscribe(onNext: { [weak self] in
-                self?.title = $0
-                if $0.count > 15 {
+                if $0 {
                     self?.titleTextField.deleteBackward()
                 }
             })
             .disposed(by: disposeBag)
         
-        output.contents
-            .asDriver(onErrorJustReturn: nil)
-            .drive(contentsTextView.rx.text)
+        output.showImagePicker
+            .emit(onNext: { [weak self] in
+                self?.pickImage()
+            })
+            .disposed(by: disposeBag)
+        
+        output.saveMemoAndPop
+            .emit(onNext: { [weak self] in
+                self?.validateSave($0)
+            })
             .disposed(by: disposeBag)
     }
     
     // MARK: - Func
+    
+    func validateSave(_ bool: Bool) {
+        if bool {
+            self.presentAlert()
+        } else {
+            self.viewModel.saveMemo()
+            self.navigationController?.popViewController(animated: true)
+        }
+    }
     
     func pickImage() {
         let picker = UIImagePickerController()

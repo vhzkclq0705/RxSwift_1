@@ -8,10 +8,13 @@
 import UIKit
 
 import RxSwift
-import RxRelay
+import RxCocoa
 
 protocol MemoFormViewModelType: ViewModelType {
     var storage: MemoStorageType { get }
+    var title: String { get set }
+    var contents: String? { get set }
+    var imgData: Data? { get set }
 }
 
 class MemoFormViewModel: MemoFormViewModelType {
@@ -28,20 +31,19 @@ class MemoFormViewModel: MemoFormViewModelType {
     // MARK: - Output
     
     struct Output {
-        let showImagePicker: PublishSubject<Void>
-        let saveMemoAndPop: PublishSubject<Void>
-        let showAlert: PublishSubject<Void>
-        let title: PublishSubject<String>
-        let contents: PublishRelay<String?>
+        let showImagePicker: Signal<Void>
+        let saveMemoAndPop: Signal<Bool>
+        let title: Signal<String>
+        let titleLength: Observable<Bool>
     }
     
     // MARK: - Property
 
     var storage: MemoStorageType
     var disposeBag = DisposeBag()
-    private var title: String
-    private var contents: String?
-    private var imgData: Data?
+    var title: String
+    var contents: String?
+    var imgData: Data?
     
     // MARK: - Init
     
@@ -55,43 +57,40 @@ class MemoFormViewModel: MemoFormViewModelType {
     // MARK: - Bind
     
     func transform(input: Input) -> Output {
-        let showImagePicker = PublishSubject<Void>()
-        let saveMemoAndPop = PublishSubject<Void>()
-        let showAlert = PublishSubject<Void>()
-        let title = PublishSubject<String>()
-        let contents = PublishRelay<String?>()
+        let inputTitle = input.title.share()
         
-        input.cameraButtonDidTapEvent
-            .bind(to: showImagePicker)
-            .disposed(by: disposeBag)
-        
-        input.saveButtonDidTapEvent
-            .bind(onNext: { [weak self] in
-                guard let self = self else { return }
-                self.title == "" ? showAlert.onNext(()) : saveMemoAndPop.onNext(())
-            })
-            .disposed(by: disposeBag)
-                
-        input.title
-            .do(onNext: { [weak self] in
+        inputTitle
+            .subscribe(onNext: { [weak self] in
                 self?.title = $0
             })
-            .bind(to: title)
             .disposed(by: disposeBag)
         
         input.contents
-            .do(onNext: { [weak self] in
+            .subscribe(onNext: { [weak self] in
                 self?.contents = $0
             })
-            .bind(to: contents)
             .disposed(by: disposeBag)
+        
+        let title = inputTitle
+            .asSignal(onErrorJustReturn: "")
+        
+        let titleLength = inputTitle
+            .map { $0.count > 15 }
+        
+        let showImagePicker = input.cameraButtonDidTapEvent
+            .asSignal(onErrorJustReturn: ())
+        
+        let saveMemoAndPop = input.saveButtonDidTapEvent
+            .map { [weak self] in
+                self?.title == ""
+            }
+            .asSignal(onErrorJustReturn: false)
                 
         return Output(
             showImagePicker: showImagePicker,
             saveMemoAndPop: saveMemoAndPop,
-            showAlert: showAlert,
             title: title,
-            contents: contents)
+            titleLength: titleLength)
     }
     
     // MARK: - Func
