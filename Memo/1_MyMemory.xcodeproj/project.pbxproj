@@ -12,6 +12,7 @@
 		760B573D2911024E00E1863B /* MemoReadViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760B573C2911024E00E1863B /* MemoReadViewModel.swift */; };
 		760B574029110A1200E1863B /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760B573F29110A1200E1863B /* ViewModelType.swift */; };
 		762623AB2912C47000DF1DDB /* MemoStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762623AA2912C47000DF1DDB /* MemoStorage.swift */; };
+		763BB5C82918012400FFAF8B /* BaseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763BB5C72918012400FFAF8B /* BaseVC.swift */; };
 		768DDAAE289ECCC700049381 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 768DDAAD289ECCC700049381 /* AppDelegate.swift */; };
 		768DDAB0289ECCC700049381 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 768DDAAF289ECCC700049381 /* SceneDelegate.swift */; };
 		768DDAB5289ECCC700049381 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 768DDAB3289ECCC700049381 /* Main.storyboard */; };
@@ -35,6 +36,7 @@
 		760B573C2911024E00E1863B /* MemoReadViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoReadViewModel.swift; sourceTree = "<group>"; };
 		760B573F29110A1200E1863B /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
 		762623AA2912C47000DF1DDB /* MemoStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoStorage.swift; sourceTree = "<group>"; };
+		763BB5C72918012400FFAF8B /* BaseVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseVC.swift; sourceTree = "<group>"; };
 		768DDAAA289ECCC700049381 /* 1_MyMemory.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 1_MyMemory.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		768DDAAD289ECCC700049381 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		768DDAAF289ECCC700049381 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -80,6 +82,14 @@
 				762623AA2912C47000DF1DDB /* MemoStorage.swift */,
 			);
 			path = Storage;
+			sourceTree = "<group>";
+		};
+		763BB5C62918010200FFAF8B /* BaseVC */ = {
+			isa = PBXGroup;
+			children = (
+				763BB5C72918012400FFAF8B /* BaseVC.swift */,
+			);
+			path = BaseVC;
 			sourceTree = "<group>";
 		};
 		768DDAA1289ECCC700049381 = {
@@ -155,6 +165,7 @@
 		768DDAD6289EE68500049381 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				763BB5C62918010200FFAF8B /* BaseVC */,
 				76E6D4E4290FBF1600FEAE74 /* MemoRead */,
 				76E6D4E3290FBEFF00FEAE74 /* MemoForm */,
 				76E6D4E2290FBEF900FEAE74 /* MemoList */,
@@ -389,6 +400,7 @@
 				768DDACB289ED74400049381 /* MemoReadVC.swift in Sources */,
 				769F39F92908F241007BB769 /* MemoListVC.swift in Sources */,
 				769F39FB2908F93D007BB769 /* MemoListViewModel.swift in Sources */,
+				763BB5C82918012400FFAF8B /* BaseVC.swift in Sources */,
 				768DDAD4289EE67800049381 /* Date++.swift in Sources */,
 				768DDAAE289ECCC700049381 /* AppDelegate.swift in Sources */,
 				768DDAB0289ECCC700049381 /* SceneDelegate.swift in Sources */,
