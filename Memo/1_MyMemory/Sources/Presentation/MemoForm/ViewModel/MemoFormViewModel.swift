@@ -31,7 +31,7 @@ class MemoFormViewModel: MemoFormViewModelType {
         let showImagePicker: PublishSubject<Void>
         let saveMemoAndPop: PublishSubject<Void>
         let showAlert: PublishSubject<Void>
-        let title: PublishRelay<String>
+        let title: PublishSubject<String>
         let contents: PublishRelay<String?>
     }
     
@@ -58,7 +58,7 @@ class MemoFormViewModel: MemoFormViewModelType {
         let showImagePicker = PublishSubject<Void>()
         let saveMemoAndPop = PublishSubject<Void>()
         let showAlert = PublishSubject<Void>()
-        let title = PublishRelay<String>()
+        let title = PublishSubject<String>()
         let contents = PublishRelay<String?>()
         
         input.cameraButtonDidTapEvent
@@ -73,7 +73,6 @@ class MemoFormViewModel: MemoFormViewModelType {
             .disposed(by: disposeBag)
                 
         input.title
-            .filter { $0.count <= 15 }
             .do(onNext: { [weak self] in
                 self?.title = $0
             })

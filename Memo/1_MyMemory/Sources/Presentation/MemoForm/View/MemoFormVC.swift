@@ -14,7 +14,6 @@ class MemoFormVC: UIViewController {
     
     // MARK: - UI
     
-    
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var contentsTextView: UITextView!
     @IBOutlet weak var preview: UIImageView!
@@ -32,6 +31,7 @@ class MemoFormVC: UIViewController {
         super.viewDidLoad()
         
         bindViewModel()
+        configureTextField()
     }
     
     // MARK: - Bind
@@ -65,9 +65,12 @@ class MemoFormVC: UIViewController {
             .disposed(by: disposeBag)
         
         output.title
-            .asDriver(onErrorJustReturn: "")
-            .drive(onNext: { [weak self] in
+            .observe(on: MainScheduler.asyncInstance)
+            .subscribe(onNext: { [weak self] in
                 self?.title = $0
+                if $0.count > 15 {
+                    self?.titleTextField.deleteBackward()
+                }
             })
             .disposed(by: disposeBag)
         
@@ -78,6 +81,16 @@ class MemoFormVC: UIViewController {
     }
     
     // MARK: - Func
+    
+    func configureTextField() {
+//        titleTextField.rx.text
+//            .orEmpty
+//            .observe(on: MainScheduler.instance)
+//            .subscribe(onNext: { [weak self] in
+//
+//            })
+//            .disposed(by: disposeBag)
+    }
     
     func pickImage() {
         let picker = UIImagePickerController()
