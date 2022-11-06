@@ -14,7 +14,7 @@ protocol MemoListViewModelType: ViewModelType {
     var storage: MemoStorageType { get }
 }
 
-class MemoListViewModel: MemoListViewModelType {
+final class MemoListViewModel: MemoListViewModelType {
     
     // MARK: - Input
     

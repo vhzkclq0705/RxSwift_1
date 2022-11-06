@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class MemoReadVC: UIViewController {
+final class MemoReadVC: BaseVC {
 
     // MARK: - UI
     
@@ -19,6 +19,7 @@ class MemoReadVC: UIViewController {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var updateButton: UIBarButtonItem!
     @IBOutlet weak var deleteButton: UIBarButtonItem!
+    @IBOutlet weak var imageDeleteButton: UIButton!
     
     lazy var cameraButton = UIBarButtonItem(
         barButtonSystemItem: .camera,
@@ -33,10 +34,10 @@ class MemoReadVC: UIViewController {
     // MARK: - Property
     
     var viewModel: MemoReadViewModel!
-    var disposeBag = DisposeBag()
-    var tempTitle: String? = ""
-    var tempButton1 = UIBarButtonItem()
-    var tempButton2 = UIBarButtonItem()
+    private var disposeBag = DisposeBag()
+    private var tempTitle: String? = ""
+    private var tempButton1 = UIBarButtonItem()
+    private var tempButton2 = UIBarButtonItem()
     
     // MARK: - Life cycle
     
@@ -49,13 +50,14 @@ class MemoReadVC: UIViewController {
     
     // MARK: - Bind
     
-    func BindViewModel() {
+    private func BindViewModel() {
         let input = MemoReadViewModel.Input(
             updateButtonDidTapEvent: updateButton.rx.tap.asObservable(),
             deleteButtonDidTapEvent: deleteButton.rx.tap.asObservable(),
             cameraButtonDidTapEvent: cameraButton.rx.tap.asObservable(),
             completeButtonDidTapEvent: completeButton.rx.tap.asObservable(),
-            title: titleTextField.rx.text.orEmpty.asObservable(),
+            imageDeleteButtonDidTapEvent: imageDeleteButton.rx.tap.asObservable(),
+            title: titleTextField.rx.text.orEmpty.skip(1).asObservable(),
             contents: contentsTextView.rx.text.asObservable())
         
         let output = viewModel.transform(input: input)
@@ -89,6 +91,12 @@ class MemoReadVC: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        output.imageDelete
+            .emit(onNext: { [weak self] in
+                self?.imageView.image = nil
+            })
+            .disposed(by: disposeBag)
+        
         output.update
             .emit(onNext: { [weak self] in
                 self?.isUpdate(true)
@@ -97,14 +105,18 @@ class MemoReadVC: UIViewController {
         
         output.complete
             .emit(onNext: { [weak self] in
-                self?.isUpdate(false)
-                self?.viewModel.updateMemo()
+                if $0 {
+                    self?.presentAlert()
+                } else {
+                    self?.isUpdate(false)
+                    self?.viewModel.updateMemo()
+                }
             })
             .disposed(by: disposeBag)
         
         output.delete
             .emit(onNext: { [weak self] in
-                self?.presentAlert()
+                self?.presentDeleteAlert()
             })
             .disposed(by: disposeBag)
         
@@ -117,16 +129,19 @@ class MemoReadVC: UIViewController {
     
     // MARK: - Configure
     
-    func configureViewController() {
+    private func configureViewController() {
         titleTextField.layer.borderWidth = 1
         titleTextField.layer.borderColor = UIColor.lightGray.cgColor
         contentsTextView.layer.borderWidth = 1
         contentsTextView.layer.borderColor = UIColor.lightGray.cgColor
+        imageView.layer.borderWidth = 1
+        imageView.layer.borderColor = UIColor.lightGray.cgColor
     }
     
     // MARK: - Func
     
-    func isUpdate(_ bool: Bool) {
+    private func isUpdate(_ bool: Bool) {
+        imageDeleteButton.isHidden = !bool
         titleTextField.isEnabled = bool
         contentsTextView.isEditable = bool
         titleTextField.backgroundColor = bool ? UIColor.systemGray5 : UIColor.white
@@ -146,12 +161,26 @@ class MemoReadVC: UIViewController {
         }
     }
     
-    func pickImage() {
+    private func pickImage() {
         let picker = UIImagePickerController()
         picker.delegate = self
         picker.allowsEditing = true
         
         self.present(picker, animated: false)
+    }
+    
+    private func presentDeleteAlert() {
+        let alert = UIAlertController(
+            title: nil,
+            message: "정말 삭제하시겠어요?.",
+            preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { [weak self] _ in
+            self?.viewModel.deleteMemo()
+            self?.navigationController?.popViewController(animated: true)
+        })
+        
+        self.present(alert, animated: true)
     }
 
 }

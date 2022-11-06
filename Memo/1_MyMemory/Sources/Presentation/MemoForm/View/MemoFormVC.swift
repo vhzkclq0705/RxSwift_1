@@ -10,35 +10,38 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class MemoFormVC: UIViewController {
+final class MemoFormVC: BaseVC {
     
     // MARK: - UI
     
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var contentsTextView: UITextView!
-    @IBOutlet weak var preview: UIImageView!
+    @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBOutlet weak var cameraButton: UIBarButtonItem!
+    @IBOutlet weak var imageDeleteButton: UIButton!
     
     // MARK: - Property
     
-    let viewModel = MemoFormViewModel()
-    var disposeBag = DisposeBag()
+    private let viewModel = MemoFormViewModel()
+    private var disposeBag = DisposeBag()
     
     // MARK: - Life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        configureViewController()
         bindViewModel()
     }
     
     // MARK: - Bind
     
-    func bindViewModel() {
+    private func bindViewModel() {
         let input = MemoFormViewModel.Input(
             cameraButtonDidTapEvent: cameraButton.rx.tap.asObservable(),
             saveButtonDidTapEvent: saveButton.rx.tap.asObservable(),
+            imageDeleteButtonDidTapEvent: imageDeleteButton.rx.tap.asObservable(),
             title: titleTextField.rx.text.orEmpty.distinctUntilChanged().asObservable(),
             contents: contentsTextView.rx.text.asObservable())
         
@@ -70,11 +73,26 @@ class MemoFormVC: UIViewController {
                 self?.validateSave($0)
             })
             .disposed(by: disposeBag)
+        
+        output.imageDelete
+            .emit(onNext: { [weak self] in
+                self?.imageView.image = nil
+            })
+            .disposed(by: disposeBag)
     }
     
     // MARK: - Func
     
-    func validateSave(_ bool: Bool) {
+    private func configureViewController() {
+        titleTextField.layer.borderWidth = 1
+        titleTextField.layer.borderColor = UIColor.lightGray.cgColor
+        contentsTextView.layer.borderWidth = 1
+        contentsTextView.layer.borderColor = UIColor.lightGray.cgColor
+        imageView.layer.borderWidth = 1
+        imageView.layer.borderColor = UIColor.lightGray.cgColor
+    }
+    
+    private func validateSave(_ bool: Bool) {
         if bool {
             self.presentAlert()
         } else {
@@ -83,7 +101,7 @@ class MemoFormVC: UIViewController {
         }
     }
     
-    func pickImage() {
+    private func pickImage() {
         let picker = UIImagePickerController()
         picker.delegate = self
         picker.allowsEditing = true
@@ -103,7 +121,7 @@ extension MemoFormVC: UIImagePickerControllerDelegate {
     {
         viewModel.setImage((info[.editedImage] as? UIImage)?.pngData())
             .subscribe(onNext: { [weak self] in
-                self?.preview.image = UIImage(data: $0!)
+                self?.imageView.image = UIImage(data: $0!)
             })
             .disposed(by: disposeBag)
         

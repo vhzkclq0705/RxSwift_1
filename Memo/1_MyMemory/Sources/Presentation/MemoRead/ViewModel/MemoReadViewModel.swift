@@ -19,7 +19,7 @@ protocol MemoReadViewModelType: ViewModelType {
     var imgData: Data? { get set }
 }
 
-class MemoReadViewModel: MemoReadViewModelType {
+final class MemoReadViewModel: MemoReadViewModelType {
     
     // MARK: - Input
     
@@ -28,6 +28,7 @@ class MemoReadViewModel: MemoReadViewModelType {
         let deleteButtonDidTapEvent: Observable<Void>
         let cameraButtonDidTapEvent: Observable<Void>
         let completeButtonDidTapEvent: Observable<Void>
+        let imageDeleteButtonDidTapEvent: Observable<Void>
         let title: Observable<String>
         let contents: Observable<String?>
     }
@@ -41,9 +42,10 @@ class MemoReadViewModel: MemoReadViewModelType {
         let date: Signal<String>
         let imgData: Signal<Data?>
         let update: Signal<Void>
-        let complete: Signal<Void>
+        let complete: Signal<Bool>
         let delete: Signal<Void>
         let camera: Signal<Void>
+        let imageDelete: Signal<Void>
     }
     
     // MARK: - Property
@@ -62,9 +64,9 @@ class MemoReadViewModel: MemoReadViewModelType {
         self.storage = Storage.shared
         self.memo = Observable.just(memo)
         self.original = memo
-        self.title = ""
-        self.contents = nil
-        self.imgData = nil
+        self.title = memo.title
+        self.contents = memo.contents
+        self.imgData = memo.imageData
     }
     
     // MARK: - Bind
@@ -112,12 +114,21 @@ class MemoReadViewModel: MemoReadViewModelType {
             .asSignal(onErrorJustReturn: ())
                 
         let complete = input.completeButtonDidTapEvent
-            .asSignal(onErrorJustReturn: ())
+            .map { [weak self] in
+                self?.title == ""
+            }
+            .asSignal(onErrorJustReturn: true)
         
-        let deleteAlert = input.deleteButtonDidTapEvent
+        let delete = input.deleteButtonDidTapEvent
             .asSignal(onErrorJustReturn: ())
         
         let camera = input.cameraButtonDidTapEvent
+            .asSignal(onErrorJustReturn: ())
+        
+        let imageDelete = input.imageDeleteButtonDidTapEvent
+            .do(onNext: {[weak self] in
+                self?.imgData = nil
+            })
             .asSignal(onErrorJustReturn: ())
         
         return Output(
@@ -128,8 +139,9 @@ class MemoReadViewModel: MemoReadViewModelType {
             imgData: imgData,
             update: update,
             complete: complete,
-            delete: deleteAlert,
-            camera: camera)
+            delete: delete,
+            camera: camera,
+            imageDelete: imageDelete)
     }
     
     // MARK: - Func
@@ -142,6 +154,10 @@ class MemoReadViewModel: MemoReadViewModelType {
     
     func updateMemo() {
         storage.update(memo: original, title: title, contents: contents, imgData: imgData)
+    }
+    
+    func deleteMemo() {
+        storage.delete(memo: original)
     }
     
 }

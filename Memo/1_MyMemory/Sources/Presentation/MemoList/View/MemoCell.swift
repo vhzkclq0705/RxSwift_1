@@ -9,7 +9,7 @@ import UIKit
 
 import RxSwift
 
-class MemoCell: UITableViewCell {
+final class MemoCell: UITableViewCell {
 
     // MARK: - UI
     

@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class MemoListVC: UIViewController {
+final class MemoListVC: BaseVC {
     
     // MARK: - UI
     
@@ -33,8 +33,7 @@ class MemoListVC: UIViewController {
     
     // MARK: - Bind
     
-    func bindViewModel() {
-        
+    private func bindViewModel() {
         let input = MemoListViewModel.Input(
             createButtonDidTapEvent: createButton.rx.tap.asObservable())
         
@@ -64,7 +63,7 @@ class MemoListVC: UIViewController {
         
     }
     
-    func configureTableViewDelegate() {
+    private func configureTableViewDelegate() {
         tableView.rx.modelSelected(MemoData.self)
             .subscribe(onNext: { [weak self] memo in
                 guard let vc = self?.storyboard?.instantiateViewController(

@@ -17,13 +17,14 @@ protocol MemoFormViewModelType: ViewModelType {
     var imgData: Data? { get set }
 }
 
-class MemoFormViewModel: MemoFormViewModelType {
+final class MemoFormViewModel: MemoFormViewModelType {
     
     // MARK: - Input
     
     struct Input {
         let cameraButtonDidTapEvent: Observable<Void>
         let saveButtonDidTapEvent: Observable<Void>
+        let imageDeleteButtonDidTapEvent: Observable<Void>
         let title: Observable<String>
         let contents: Observable<String?>
     }
@@ -33,6 +34,7 @@ class MemoFormViewModel: MemoFormViewModelType {
     struct Output {
         let showImagePicker: Signal<Void>
         let saveMemoAndPop: Signal<Bool>
+        let imageDelete: Signal<Void>
         let title: Signal<String>
         let titleLength: Observable<Bool>
     }
@@ -85,10 +87,17 @@ class MemoFormViewModel: MemoFormViewModelType {
                 self?.title == ""
             }
             .asSignal(onErrorJustReturn: false)
+        
+        let imageDelete = input.imageDeleteButtonDidTapEvent
+            .do(onNext: { [weak self] in
+                self?.imgData = nil
+            })
+            .asSignal(onErrorJustReturn: ())
                 
         return Output(
             showImagePicker: showImagePicker,
             saveMemoAndPop: saveMemoAndPop,
+            imageDelete: imageDelete,
             title: title,
             titleLength: titleLength)
     }
